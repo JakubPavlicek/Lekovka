@@ -64,39 +64,43 @@ struct CaregiversView: View {
     
     // MARK: - Header Section
     private var headerSection: some View {
-        VStack(spacing: 16) {
+        HStack(spacing: 16) {
             ZStack {
                 // Glow rings
                 Circle()
                     .fill(Color(hex: "ffd200").opacity(0.06))
-                    .frame(width: 140, height: 140)
+                    .frame(width: 60, height: 60)
                 
                 Circle()
                     .fill(accentGradient)
-                    .frame(width: 90, height: 90)
-                    .shadow(color: Color(hex: "ffd200").opacity(0.35), radius: 16, x: 0, y: 8)
+                    .frame(width: 44, height: 44)
+                    .shadow(color: Color(hex: "ffd200").opacity(0.35), radius: 8, x: 0, y: 4)
                 
                 Image(systemName: "person.2.badge.gearshape.fill")
-                    .font(.system(size: 38))
+                    .font(.system(size: 22))
                     .foregroundColor(.white)
             }
             
-            Text("Caregiver Contacts")
-                .font(.system(size: 22, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Caregiver Contacts")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundColor(.white)
+                
+                Text("Add emails of people who should be\nnotified when you miss your medication")
+                    .font(.system(size: 13, design: .rounded))
+                    .foregroundColor(Color.white.opacity(0.5))
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             
-            Text("Add emails of people who should be\nnotified when you miss your medication")
-                .font(.system(size: 14, design: .rounded))
-                .foregroundColor(Color.white.opacity(0.5))
-                .multilineTextAlignment(.center)
-                .lineSpacing(2)
+            Spacer()
         }
-        .padding(.vertical, 28)
+        .padding(20)
         .frame(maxWidth: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 24)
+            RoundedRectangle(cornerRadius: 20)
                 .fill(cardColor)
-                .shadow(color: Color.black.opacity(0.3), radius: 16, x: 0, y: 8)
+                .shadow(color: Color.black.opacity(0.2), radius: 12, x: 0, y: 6)
         )
     }
     

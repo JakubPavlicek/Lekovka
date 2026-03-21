@@ -62,38 +62,42 @@ struct SettingsView: View {
     
     // MARK: - Header Section
     private var headerSection: some View {
-        VStack(spacing: 16) {
+        HStack(spacing: 16) {
             ZStack {
                 Circle()
                     .fill(Color(hex: "667eea").opacity(0.1))
-                    .frame(width: 120, height: 120)
+                    .frame(width: 60, height: 60)
                 
                 Circle()
                     .fill(accentGradient)
-                    .frame(width: 80, height: 80)
-                    .shadow(color: Color(hex: "667eea").opacity(0.4), radius: 16, x: 0, y: 8)
+                    .frame(width: 44, height: 44)
+                    .shadow(color: Color(hex: "667eea").opacity(0.4), radius: 8, x: 0, y: 4)
                 
                 Image(systemName: "gearshape.fill")
-                    .font(.system(size: 34))
+                    .font(.system(size: 22))
                     .foregroundColor(.white)
             }
             
-            Text("App Preferences")
-                .font(.system(size: 22, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("App Preferences")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundColor(.white)
+                
+                Text("Customize your pill reminders\nand caregiver notifications.")
+                    .font(.system(size: 13, design: .rounded))
+                    .foregroundColor(Color.white.opacity(0.5))
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             
-            Text("Customize your pill reminders\nand caregiver notifications.")
-                .font(.system(size: 14, design: .rounded))
-                .foregroundColor(Color.white.opacity(0.5))
-                .multilineTextAlignment(.center)
-                .lineSpacing(2)
+            Spacer()
         }
-        .padding(.vertical, 24)
+        .padding(20)
         .frame(maxWidth: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 24)
+            RoundedRectangle(cornerRadius: 20)
                 .fill(cardColor)
-                .shadow(color: Color.black.opacity(0.3), radius: 16, x: 0, y: 8)
+                .shadow(color: Color.black.opacity(0.2), radius: 12, x: 0, y: 6)
         )
     }
     
