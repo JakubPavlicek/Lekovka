@@ -1,12 +1,23 @@
 import SwiftUI
 
 // MARK: - Timer View
-/// Page 1: Set a pill reminder time (HH:mm) and see a live countdown.
+/// Page 2: Two pill reminder timers (morning & evening) with HH:mm pickers,
+/// countdown displays, and ESP32 + REST API schedule sync.
 struct TimerView: View {
     @ObservedObject var reminderManager: PillReminderManager
+    @ObservedObject var bleManager: BLEBackgroundManager
     
-    // Gradient colors for the pill theme
-    private let accentGradient = LinearGradient(
+    @State private var isSaving: Bool = false
+    @State private var saveConfirmation: String? = nil
+    
+    // Gradient colors
+    private let morningGradient = LinearGradient(
+        colors: [Color(hex: "f7971e"), Color(hex: "ffd200")],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    private let eveningGradient = LinearGradient(
         colors: [Color(hex: "667eea"), Color(hex: "764ba2")],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
@@ -18,17 +29,64 @@ struct TimerView: View {
         endPoint: .bottomTrailing
     )
     
+    private let cardColor = Color(hex: "1a1a2e")
+    
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 28) {
+                VStack(spacing: 24) {
                     
-                    // MARK: - Status Card
-                    if reminderManager.pillsTaken {
-                        pillsTakenCard
-                    } else {
-                        timerSetupSection
+                    // MARK: - Morning Timer
+                    timerCard(
+                        title: "Morning",
+                        icon: "sun.max.fill",
+                        iconColor: "ffd200",
+                        gradient: morningGradient,
+                        hour: $reminderManager.morningHour,
+                        minute: $reminderManager.morningMinute,
+                        isActive: reminderManager.isMorningActive,
+                        pillsTaken: reminderManager.morningPillsTaken,
+                        pillsTakenTime: reminderManager.morningPillsTakenTime,
+                        timeRemaining: reminderManager.morningTimeRemaining,
+                        formattedTime: reminderManager.formattedMorningTime(),
+                        onStart: { reminderManager.startMorningTimer() },
+                        onStop: { reminderManager.stopMorningTimer() },
+                        onTaken: { reminderManager.markMorningPillsTaken() }
+                    )
+                    
+                    // MARK: - Evening Timer
+                    timerCard(
+                        title: "Evening",
+                        icon: "moon.stars.fill",
+                        iconColor: "764ba2",
+                        gradient: eveningGradient,
+                        hour: $reminderManager.eveningHour,
+                        minute: $reminderManager.eveningMinute,
+                        isActive: reminderManager.isEveningActive,
+                        pillsTaken: reminderManager.eveningPillsTaken,
+                        pillsTakenTime: reminderManager.eveningPillsTakenTime,
+                        timeRemaining: reminderManager.eveningTimeRemaining,
+                        formattedTime: reminderManager.formattedEveningTime(),
+                        onStart: { reminderManager.startEveningTimer() },
+                        onStop: { reminderManager.stopEveningTimer() },
+                        onTaken: { reminderManager.markEveningPillsTaken() }
+                    )
+                    
+                    // MARK: - Save & Sync Button
+                    saveButton
+                    
+                    // MARK: - Confirmation banner
+                    if let msg = saveConfirmation {
+                        confirmationBanner(message: msg)
                     }
+                    
+                    // MARK: - Reset (if both taken)
+                    if reminderManager.allPillsTaken {
+                        resetButton
+                    }
+                    
+                    // MARK: - Info card
+                    infoCard
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
@@ -41,224 +99,271 @@ struct TimerView: View {
         }
     }
     
-    // MARK: - Subviews
-    
-    private var pillsTakenCard: some View {
+    // MARK: - Timer Card
+    private func timerCard(
+        title: String,
+        icon: String,
+        iconColor: String,
+        gradient: LinearGradient,
+        hour: Binding<Int>,
+        minute: Binding<Int>,
+        isActive: Bool,
+        pillsTaken: Bool,
+        pillsTakenTime: Date?,
+        timeRemaining: String,
+        formattedTime: String,
+        onStart: @escaping () -> Void,
+        onStop: @escaping () -> Void,
+        onTaken: @escaping () -> Void
+    ) -> some View {
         VStack(spacing: 20) {
-            ZStack {
-                Circle()
-                    .fill(successGradient)
-                    .frame(width: 100, height: 100)
-                    .shadow(color: Color(hex: "38ef7d").opacity(0.4), radius: 20, x: 0, y: 8)
-                
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 50))
-                    .foregroundColor(.white)
-            }
-            .padding(.top, 20)
-            
-            Text("Pills Taken! ✅")
-                .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
-            
-            if let time = reminderManager.pillsTakenTime {
-                Text("Taken at \(time, formatter: timeFormatter)")
-                    .font(.subheadline)
-                    .foregroundColor(Color.white.opacity(0.6))
-            }
-            
-            Button(action: {
-                withAnimation(.spring(response: 0.5)) {
-                    reminderManager.resetForNewDay()
-                }
-            }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "arrow.counterclockwise")
-                    Text("Reset for Tomorrow")
-                }
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(Color(hex: "667eea"))
-                .padding(.horizontal, 24)
-                .padding(.vertical, 14)
-                .background(
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(Color(hex: "667eea").opacity(0.15))
-                )
-            }
-            .padding(.top, 8)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 32)
-        .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color(hex: "1a1a2e"))
-                .shadow(color: Color.black.opacity(0.3), radius: 16, x: 0, y: 8)
-        )
-    }
-    
-    private var timerSetupSection: some View {
-        VStack(spacing: 24) {
-            // Time picker card
-            VStack(spacing: 20) {
-                HStack(spacing: 6) {
-                    Image(systemName: "clock.fill")
-                        .foregroundColor(Color(hex: "667eea"))
-                    Text("Set Reminder Time")
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+            // Header
+            HStack(spacing: 10) {
+                ZStack {
+                    Circle()
+                        .fill(
+                            pillsTaken
+                                ? successGradient
+                                : gradient
+                        )
+                        .frame(width: 44, height: 44)
+                        .shadow(color: Color(hex: iconColor).opacity(0.3), radius: 8, x: 0, y: 4)
+                    
+                    Image(systemName: pillsTaken ? "checkmark.circle.fill" : icon)
+                        .font(.system(size: 20))
                         .foregroundColor(.white)
                 }
                 
-                HStack(spacing: 4) {
-                    // Hours picker
-                    Picker("Hours", selection: $reminderManager.targetHour) {
-                        ForEach(0..<24, id: \.self) { hour in
-                            Text(String(format: "%02d", hour))
-                                .tag(hour)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(width: 80, height: 150)
-                    .clipped()
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(title) Pills")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
                     
-                    Text(":")
-                        .font(.system(size: 36, weight: .bold, design: .monospaced))
-                        .foregroundColor(Color(hex: "667eea"))
-                    
-                    // Minutes picker
-                    Picker("Minutes", selection: $reminderManager.targetMinute) {
-                        ForEach(0..<60, id: \.self) { minute in
-                            Text(String(format: "%02d", minute))
-                                .tag(minute)
-                                .foregroundColor(.white)
-                        }
+                    if pillsTaken, let time = pillsTakenTime {
+                        Text("Taken at \(time, formatter: timeFormatter)")
+                            .font(.system(size: 12, design: .rounded))
+                            .foregroundColor(Color(hex: "38ef7d").opacity(0.8))
+                    } else if isActive {
+                        Text("Scheduled for \(formattedTime)")
+                            .font(.system(size: 12, design: .rounded))
+                            .foregroundColor(Color.white.opacity(0.45))
+                    } else {
+                        Text("Set your \(title.lowercased()) time")
+                            .font(.system(size: 12, design: .rounded))
+                            .foregroundColor(Color.white.opacity(0.35))
                     }
-                    .pickerStyle(.wheel)
-                    .frame(width: 80, height: 150)
-                    .clipped()
+                }
+                
+                Spacer()
+                
+                // Status badge
+                if pillsTaken {
+                    Text("Done")
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                        .foregroundColor(Color(hex: "38ef7d"))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(
+                            Capsule().fill(Color(hex: "38ef7d").opacity(0.15))
+                        )
+                } else if isActive {
+                    Text("Active")
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                        .foregroundColor(Color(hex: iconColor))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(
+                            Capsule().fill(Color(hex: iconColor).opacity(0.15))
+                        )
                 }
             }
-            .padding(24)
-            .background(
-                RoundedRectangle(cornerRadius: 24)
-                    .fill(Color(hex: "1a1a2e"))
-                    .shadow(color: Color.black.opacity(0.3), radius: 16, x: 0, y: 8)
-            )
             
-            // Countdown / Start-Stop
-            if reminderManager.isTimerActive {
-                // Countdown display
-                VStack(spacing: 16) {
-                    Text("⏳ Next Reminder")
-                        .font(.system(size: 16, weight: .medium, design: .rounded))
-                        .foregroundColor(Color.white.opacity(0.6))
+            if pillsTaken {
+                // Already taken — nothing else to show
+            } else if isActive {
+                // Countdown
+                VStack(spacing: 12) {
+                    Text(timeRemaining)
+                        .font(.system(size: 40, weight: .bold, design: .monospaced))
+                        .foregroundStyle(gradient)
                     
-                    Text(reminderManager.timeRemainingString)
-                        .font(.system(size: 52, weight: .bold, design: .monospaced))
-                        .foregroundStyle(accentGradient)
-                    
-                    Text("Scheduled for \(reminderManager.formattedTime())")
-                        .font(.caption)
-                        .foregroundColor(Color.white.opacity(0.4))
-                    
-                    HStack(spacing: 16) {
-                        // Cancel button
+                    HStack(spacing: 12) {
                         Button(action: {
-                            withAnimation(.spring(response: 0.4)) {
-                                reminderManager.stopTimer()
-                            }
+                            withAnimation(.spring(response: 0.4)) { onStop() }
                         }) {
-                            HStack(spacing: 6) {
+                            HStack(spacing: 5) {
                                 Image(systemName: "xmark.circle.fill")
                                 Text("Cancel")
                             }
-                            .font(.system(size: 15, weight: .semibold))
+                            .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 14)
+                            .padding(.horizontal, 18)
+                            .padding(.vertical, 11)
                             .background(
-                                RoundedRectangle(cornerRadius: 14)
+                                RoundedRectangle(cornerRadius: 12)
                                     .fill(Color(hex: "e74c3c").opacity(0.8))
                             )
                         }
                         
-                        // Mark as taken
                         Button(action: {
-                            withAnimation(.spring(response: 0.5)) {
-                                reminderManager.markPillsTaken()
-                            }
+                            withAnimation(.spring(response: 0.5)) { onTaken() }
                         }) {
-                            HStack(spacing: 6) {
+                            HStack(spacing: 5) {
                                 Image(systemName: "checkmark.circle.fill")
                                 Text("Taken!")
                             }
-                            .font(.system(size: 15, weight: .semibold))
+                            .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 14)
+                            .padding(.horizontal, 18)
+                            .padding(.vertical, 11)
                             .background(
-                                RoundedRectangle(cornerRadius: 14)
+                                RoundedRectangle(cornerRadius: 12)
                                     .fill(successGradient)
                             )
                         }
                     }
-                    .padding(.top, 4)
                 }
-                .padding(28)
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 24)
-                        .fill(Color(hex: "1a1a2e"))
-                        .shadow(color: Color(hex: "667eea").opacity(0.15), radius: 20, x: 0, y: 8)
-                )
+                .padding(.top, 4)
             } else {
-                // Start button
-                Button(action: {
-                    withAnimation(.spring(response: 0.4)) {
-                        reminderManager.startTimer()
+                // Time picker
+                HStack(spacing: 4) {
+                    Picker("Hours", selection: hour) {
+                        ForEach(0..<24, id: \.self) { h in
+                            Text(String(format: "%02d", h))
+                                .tag(h)
+                                .foregroundColor(.white)
+                        }
                     }
-                }) {
-                    HStack(spacing: 10) {
-                        Image(systemName: "bell.badge.fill")
-                            .font(.system(size: 20))
-                        Text("Set Reminder")
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
+                    .pickerStyle(.wheel)
+                    .frame(width: 70, height: 130)
+                    .clipped()
+                    
+                    Text(":")
+                        .font(.system(size: 30, weight: .bold, design: .monospaced))
+                        .foregroundColor(Color(hex: iconColor))
+                    
+                    Picker("Minutes", selection: minute) {
+                        ForEach(0..<60, id: \.self) { m in
+                            Text(String(format: "%02d", m))
+                                .tag(m)
+                                .foregroundColor(.white)
+                        }
                     }
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 18)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(accentGradient)
-                            .shadow(color: Color(hex: "667eea").opacity(0.4), radius: 12, x: 0, y: 6)
-                    )
+                    .pickerStyle(.wheel)
+                    .frame(width: 70, height: 130)
+                    .clipped()
                 }
             }
-            
-            // Info card
-            VStack(alignment: .leading, spacing: 12) {
-                HStack(spacing: 8) {
-                    Image(systemName: "info.circle.fill")
-                        .foregroundColor(Color(hex: "667eea"))
-                    Text("How it works")
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
-                        .foregroundColor(.white)
+        }
+        .padding(22)
+        .background(
+            RoundedRectangle(cornerRadius: 24)
+                .fill(cardColor)
+                .shadow(color: Color.black.opacity(0.3), radius: 16, x: 0, y: 8)
+        )
+    }
+    
+    // MARK: - Save & Sync Button
+    private var saveButton: some View {
+        Button(action: { saveSchedule() }) {
+            HStack(spacing: 10) {
+                if isSaving {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(0.9)
+                } else {
+                    Image(systemName: "arrow.triangle.2.circlepath.circle.fill")
+                        .font(.system(size: 20))
                 }
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    infoRow(icon: "1.circle.fill", text: "Set your pill time above")
-                    infoRow(icon: "2.circle.fill", text: "You'll be notified at that time")
-                    infoRow(icon: "3.circle.fill", text: "Reminders repeat every 3 min")
-                    infoRow(icon: "4.circle.fill", text: "Take your pill via ESP32 or API to stop")
-                }
+                Text(isSaving ? "Saving..." : "Save & Sync Schedule")
+                    .font(.system(size: 17, weight: .bold, design: .rounded))
             }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 17)
             .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color(hex: "1a1a2e").opacity(0.6))
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(
+                        LinearGradient(
+                            colors: [Color(hex: "667eea"), Color(hex: "764ba2")],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .shadow(color: Color(hex: "667eea").opacity(0.4), radius: 12, x: 0, y: 6)
             )
         }
+        .disabled(isSaving)
+    }
+    
+    // MARK: - Confirmation Banner
+    private func confirmationBanner(message: String) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 18))
+            Text(message)
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+            Spacer()
+        }
+        .foregroundColor(Color(hex: "38ef7d"))
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color(hex: "38ef7d").opacity(0.1))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(Color(hex: "38ef7d").opacity(0.2), lineWidth: 1)
+                )
+        )
+        .transition(.opacity.combined(with: .move(edge: .bottom)))
+    }
+    
+    // MARK: - Reset Button
+    private var resetButton: some View {
+        Button(action: {
+            withAnimation(.spring(response: 0.5)) {
+                reminderManager.resetForNewDay()
+            }
+        }) {
+            HStack(spacing: 8) {
+                Image(systemName: "arrow.counterclockwise")
+                Text("Reset for Tomorrow")
+            }
+            .font(.system(size: 16, weight: .semibold, design: .rounded))
+            .foregroundColor(Color(hex: "667eea"))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color(hex: "667eea").opacity(0.12))
+            )
+        }
+    }
+    
+    // MARK: - Info Card
+    private var infoCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "info.circle.fill")
+                    .foregroundColor(Color(hex: "667eea"))
+                Text("How it works")
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .foregroundColor(.white)
+            }
+            
+            VStack(alignment: .leading, spacing: 8) {
+                infoRow(icon: "1.circle.fill", text: "Set your morning & evening pill times")
+                infoRow(icon: "2.circle.fill", text: "Tap Save to sync with ESP32 and server")
+                infoRow(icon: "3.circle.fill", text: "Reminders repeat every 5 min until taken")
+                infoRow(icon: "4.circle.fill", text: "Confirm via ESP32 or tap \"Taken!\" to stop")
+            }
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(cardColor.opacity(0.6))
+        )
     }
     
     private func infoRow(icon: String, text: String) -> some View {
@@ -272,6 +377,38 @@ struct TimerView: View {
         }
     }
     
+    // MARK: - Save Schedule
+    private func saveSchedule() {
+        isSaving = true
+        saveConfirmation = nil
+        
+        // 1. Start local timers & notifications
+        withAnimation(.spring(response: 0.4)) {
+            reminderManager.startBothTimers()
+        }
+        
+        // 2. Send configuration to ESP32 via BLE
+        if let json = reminderManager.buildConfigurationScheduleJSON() {
+            bleManager.sendString(json)
+        }
+        
+        // 3. Send schedule to REST API
+        reminderManager.sendScheduleToAPI()
+        
+        // Show confirmation after a short delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            isSaving = false
+            withAnimation(.spring(response: 0.4)) {
+                saveConfirmation = "Schedule saved & synced!"
+            }
+            // Auto-hide confirmation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                withAnimation { saveConfirmation = nil }
+            }
+        }
+    }
+    
+    // MARK: - Formatter
     private var timeFormatter: DateFormatter {
         let f = DateFormatter()
         f.dateFormat = "HH:mm"

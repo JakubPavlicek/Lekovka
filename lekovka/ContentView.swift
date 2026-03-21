@@ -48,7 +48,7 @@ struct ContentView: View {
     // MARK: - Main Tab View
     private var mainTabView: some View {
         TabView(selection: $selectedTab) {
-            TimerView(reminderManager: reminderManager)
+            TimerView(reminderManager: reminderManager, bleManager: bleManager)
                 .tabItem {
                     Image(systemName: "timer.circle.fill")
                     Text("Timer")

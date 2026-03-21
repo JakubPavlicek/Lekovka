@@ -3,25 +3,76 @@ import UserNotifications
 import Combine
 
 // MARK: - Pill Reminder Manager
-/// Central state manager for pill reminders, timers, and notification scheduling.
+/// Central state manager for pill reminders with two schedules (morning & evening).
 class PillReminderManager: ObservableObject {
     
-    // MARK: - Published Properties
-    @Published var targetHour: Int = 8
-    @Published var targetMinute: Int = 0
-    @Published var isTimerActive: Bool = false
-    @Published var pillsTaken: Bool = false
-    @Published var pillsTakenTime: Date? = nil
-    @Published var timeRemainingString: String = ""
+    // MARK: - Published Properties (Morning)
+    @Published var morningHour: Int = 8
+    @Published var morningMinute: Int = 0
+    @Published var isMorningActive: Bool = false
+    @Published var morningPillsTaken: Bool = false
+    @Published var morningPillsTakenTime: Date? = nil
+    @Published var morningTimeRemaining: String = ""
+    @Published var morningScheduleID: Int? {
+        didSet {
+            if let id = morningScheduleID {
+                UserDefaults.standard.set(id, forKey: "lekovka_morning_schedule_id")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lekovka_morning_schedule_id")
+            }
+        }
+    }
+    
+    // MARK: - Published Properties (Evening)
+    @Published var eveningHour: Int = 20
+    @Published var eveningMinute: Int = 0
+    @Published var isEveningActive: Bool = false
+    @Published var eveningPillsTaken: Bool = false
+    @Published var eveningPillsTakenTime: Date? = nil
+    @Published var eveningTimeRemaining: String = ""
+    @Published var eveningScheduleID: Int? {
+        didSet {
+            if let id = eveningScheduleID {
+                UserDefaults.standard.set(id, forKey: "lekovka_evening_schedule_id")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lekovka_evening_schedule_id")
+            }
+        }
+    }
+    
+    // MARK: - General
     @Published var reminderCount: Int = 0
     
+    /// Convenience: true if both pills have been taken
+    var allPillsTaken: Bool {
+        morningPillsTaken && eveningPillsTaken
+    }
+    
+    // Legacy compatibility
+    var pillsTaken: Bool {
+        get { allPillsTaken }
+    }
+    var pillsTakenTime: Date? {
+        [morningPillsTakenTime, eveningPillsTakenTime].compactMap { $0 }.max()
+    }
+    var isTimerActive: Bool {
+        isMorningActive || isEveningActive
+    }
+    
     // MARK: - Private Properties
-    private var timer: Timer?
-    private var targetDate: Date?
-    private let reminderIntervalSeconds: TimeInterval = 180 // 3 minutes
-    private let notificationCategoryIdentifier = "PILL_REMINDER"
+    private var morningTimer: Timer?
+    private var eveningTimer: Timer?
+    private var morningTargetDate: Date?
+    private var eveningTargetDate: Date?
+    private let reminderIntervalSeconds: TimeInterval = 300 // 5 minutes
     
     init() {
+        if let mID = UserDefaults.standard.object(forKey: "lekovka_morning_schedule_id") as? Int {
+            self.morningScheduleID = mID
+        }
+        if let eID = UserDefaults.standard.object(forKey: "lekovka_evening_schedule_id") as? Int {
+            self.eveningScheduleID = eID
+        }
         requestNotificationPermission()
     }
     
@@ -36,101 +87,335 @@ class PillReminderManager: ObservableObject {
         }
     }
     
-    // MARK: - Timer Control
+    // MARK: - Formatted Times
+    func formattedMorningTime() -> String {
+        String(format: "%02d:%02d", morningHour, morningMinute)
+    }
     
-    /// Schedules a pill reminder at the given hour:minute today (or tomorrow if that time has passed).
-    func startTimer() {
-        guard !pillsTaken else { return }
+    func formattedEveningTime() -> String {
+        String(format: "%02d:%02d", eveningHour, eveningMinute)
+    }
+    
+    // Legacy compatibility
+    var targetHour: Int {
+        get { morningHour }
+        set { morningHour = newValue }
+    }
+    var targetMinute: Int {
+        get { morningMinute }
+        set { morningMinute = newValue }
+    }
+    var timeRemainingString: String {
+        morningTimeRemaining
+    }
+    func formattedTime() -> String {
+        formattedMorningTime()
+    }
+    
+    // MARK: - Start Both Timers
+    func startBothTimers() {
+        startMorningTimer()
+        startEveningTimer()
+    }
+    
+    // MARK: - Morning Timer
+    func startMorningTimer() {
+        guard !morningPillsTaken else { return }
         
-        cancelAllReminders()
+        cancelReminders(prefix: "morning")
         
         let calendar = Calendar.current
         var components = calendar.dateComponents([.year, .month, .day], from: Date())
-        components.hour = targetHour
-        components.minute = targetMinute
+        components.hour = morningHour
+        components.minute = morningMinute
         components.second = 0
         
         guard var date = calendar.date(from: components) else { return }
         
-        // If the target time has already passed today, schedule for tomorrow
         if date <= Date() {
             date = calendar.date(byAdding: .day, value: 1, to: date) ?? date
         }
         
-        targetDate = date
-        isTimerActive = true
-        reminderCount = 0
+        morningTargetDate = date
+        isMorningActive = true
         
-        // Schedule the initial notification
-        scheduleNotification(at: date, title: "💊 Time to take your pills!", body: "It's \(formattedTime()) — don't forget your medication.", identifier: "pill_reminder_main")
+        scheduleNotification(
+            at: date,
+            title: "🌅 Morning pills!",
+            body: "It's \(formattedMorningTime()) — time for your morning medication.",
+            identifier: "morning_reminder_main"
+        )
         
-        // Schedule follow-up reminders every 3 minutes (up to 10)
         for i in 1...10 {
             let reminderDate = date.addingTimeInterval(reminderIntervalSeconds * Double(i))
             scheduleNotification(
                 at: reminderDate,
-                title: "⏰ Pill Reminder #\(i)",
-                body: "You still haven't taken your pills! It's been \(i * 3) minutes.",
-                identifier: "pill_reminder_followup_\(i)"
+                title: "⏰ Morning Reminder #\(i)",
+                body: "You still haven't taken your morning pills! It's been \(i * 5) minutes.",
+                identifier: "morning_reminder_followup_\(i)"
             )
         }
         
-        // Start a display timer to show countdown
-        startCountdownTimer()
+        startCountdownTimer(for: .morning)
+    }
+    
+    // MARK: - Evening Timer
+    func startEveningTimer() {
+        guard !eveningPillsTaken else { return }
+        
+        cancelReminders(prefix: "evening")
+        
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .day], from: Date())
+        components.hour = eveningHour
+        components.minute = eveningMinute
+        components.second = 0
+        
+        guard var date = calendar.date(from: components) else { return }
+        
+        if date <= Date() {
+            date = calendar.date(byAdding: .day, value: 1, to: date) ?? date
+        }
+        
+        eveningTargetDate = date
+        isEveningActive = true
+        
+        scheduleNotification(
+            at: date,
+            title: "🌙 Evening pills!",
+            body: "It's \(formattedEveningTime()) — time for your evening medication.",
+            identifier: "evening_reminder_main"
+        )
+        
+        for i in 1...10 {
+            let reminderDate = date.addingTimeInterval(reminderIntervalSeconds * Double(i))
+            scheduleNotification(
+                at: reminderDate,
+                title: "⏰ Evening Reminder #\(i)",
+                body: "You still haven't taken your evening pills! It's been \(i * 5) minutes.",
+                identifier: "evening_reminder_followup_\(i)"
+            )
+        }
+        
+        startCountdownTimer(for: .evening)
+    }
+    
+    // MARK: - Stop Timers
+    func stopMorningTimer() {
+        isMorningActive = false
+        morningTargetDate = nil
+        morningTimeRemaining = ""
+        morningTimer?.invalidate()
+        morningTimer = nil
+        cancelReminders(prefix: "morning")
+        
+        // Delete specifically the morning schedule from backend using the persisted ID
+        if let id = morningScheduleID {
+            deleteScheduleFromAPI(id: id)
+            morningScheduleID = nil
+        }
+    }
+    
+    func stopEveningTimer() {
+        isEveningActive = false
+        eveningTargetDate = nil
+        eveningTimeRemaining = ""
+        eveningTimer?.invalidate()
+        eveningTimer = nil
+        cancelReminders(prefix: "evening")
+        
+        // Delete specifically the evening schedule from backend using the persisted ID
+        if let id = eveningScheduleID {
+            deleteScheduleFromAPI(id: id)
+            eveningScheduleID = nil
+        }
     }
     
     func stopTimer() {
-        isTimerActive = false
-        targetDate = nil
-        timeRemainingString = ""
-        timer?.invalidate()
-        timer = nil
-        cancelAllReminders()
+        stopMorningTimer()
+        stopEveningTimer()
     }
     
-    /// Called when pills are confirmed taken (from BLE, API, or manual).
+    // MARK: - Mark Pills Taken
+    func markMorningPillsTaken() {
+        morningPillsTaken = true
+        morningPillsTakenTime = Date()
+        stopMorningTimer()
+    }
+    
+    func markEveningPillsTaken() {
+        eveningPillsTaken = true
+        eveningPillsTakenTime = Date()
+        stopEveningTimer()
+    }
+    
+    /// Legacy: marks both as taken
     func markPillsTaken() {
-        pillsTaken = true
-        pillsTakenTime = Date()
-        stopTimer()
+        if !morningPillsTaken { markMorningPillsTaken() }
+        if !eveningPillsTaken { markEveningPillsTaken() }
     }
     
-    /// Resets for a new day.
+    // MARK: - Reset
     func resetForNewDay() {
-        pillsTaken = false
-        pillsTakenTime = nil
+        morningPillsTaken = false
+        morningPillsTakenTime = nil
+        eveningPillsTaken = false
+        eveningPillsTakenTime = nil
         reminderCount = 0
     }
     
-    // MARK: - Formatted Time
-    func formattedTime() -> String {
-        return String(format: "%02d:%02d", targetHour, targetMinute)
+    // MARK: - Schedule Configuration JSON (for ESP32)
+    /// Builds the post-configuration-schedule JSON to send to ESP32.
+    func buildConfigurationScheduleJSON() -> String? {
+        let payload: [String: Any] = [
+            "action": "post-configuration-schedule",
+            "body": [
+                "morning": [
+                    "interval_alert_trigger_minutes": Int(reminderIntervalSeconds / 60),
+                    "alert": formattedMorningTime()
+                ],
+                "evening": [
+                    "interval_alert_trigger_minutes": Int(reminderIntervalSeconds / 60),
+                    "alert": formattedEveningTime()
+                ]
+            ]
+        ]
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: payload, options: []),
+              let json = String(data: data, encoding: .utf8) else {
+            return nil
+        }
+        return json
+    }
+    
+    // MARK: - API Response Model
+    struct ScheduleResponse: Codable {
+        let id: Int
+        let scheduled_time: String
+        let user_id: Int
+    }
+    
+    // MARK: - Send Schedule to REST API
+    func sendScheduleToAPI() {
+        let baseURL = AuthManager.apiBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard let url = URL(string: "\(baseURL)/schedules") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") {
+            request.setValue(userId, forHTTPHeaderField: "X-User-ID")
+        }
+        
+        let morningTime = formattedMorningTime()
+        let eveningTime = formattedEveningTime()
+        
+        let body: [String: String] = [
+            "time1": morningTime,
+            "time2": eveningTime
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("❌ Schedule API error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse,
+               (200...299).contains(httpResponse.statusCode),
+               let data = data {
+                
+                do {
+                    let schedules = try JSONDecoder().decode([ScheduleResponse].self, from: data)
+                    
+                    // Match the returned IDs to morning vs evening based on their scheduled_time
+                    DispatchQueue.main.async {
+                        for schedule in schedules {
+                            // Trim seconds if API returns "08:00:00" instead of "08:00"
+                            let timePrefix = String(schedule.scheduled_time.prefix(5))
+                            if timePrefix == morningTime {
+                                self.morningScheduleID = schedule.id
+                                print("✅ Saved morning schedule ID: \(schedule.id)")
+                            } else if timePrefix == eveningTime {
+                                self.eveningScheduleID = schedule.id
+                                print("✅ Saved evening schedule ID: \(schedule.id)")
+                            }
+                        }
+                    }
+                } catch {
+                    print("❌ Failed to decode schedules: \(error)")
+                }
+            } else {
+                 let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+                 print("📡 Schedule API response: HTTP \(status)")
+            }
+        }.resume()
+    }
+    
+    // MARK: - Delete Specific Schedule from API
+    private func deleteScheduleFromAPI(id: Int) {
+        let baseURL = AuthManager.apiBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard let url = URL(string: "\(baseURL)/schedules/\(id)") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") {
+            request.setValue(userId, forHTTPHeaderField: "X-User-ID")
+        }
+        
+        URLSession.shared.dataTask(with: request) { _, response, _ in
+            if let httpResponse = response as? HTTPURLResponse {
+                print("🗑️ Deleted schedule ID \(id), API response: HTTP \(httpResponse.statusCode)")
+            }
+        }.resume()
     }
     
     // MARK: - Private Helpers
     
-    private func startCountdownTimer() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self, let target = self.targetDate else { return }
-            
-            let remaining = target.timeIntervalSince(Date())
-            
-            if remaining <= 0 {
+    private enum TimerSlot {
+        case morning, evening
+    }
+    
+    private func startCountdownTimer(for slot: TimerSlot) {
+        switch slot {
+        case .morning:
+            morningTimer?.invalidate()
+            morningTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                guard let self = self, let target = self.morningTargetDate else { return }
+                let remaining = target.timeIntervalSince(Date())
                 DispatchQueue.main.async {
-                    self.timeRemainingString = "Time's up! Take your pills!"
-                    self.timer?.invalidate()
-                    self.timer = nil
+                    if remaining <= 0 {
+                        self.morningTimeRemaining = "Time's up!"
+                        self.morningTimer?.invalidate()
+                        self.morningTimer = nil
+                    } else {
+                        let h = Int(remaining) / 3600
+                        let m = (Int(remaining) % 3600) / 60
+                        let s = Int(remaining) % 60
+                        self.morningTimeRemaining = String(format: "%02d:%02d:%02d", h, m, s)
+                    }
                 }
-                return
             }
-            
-            let hours = Int(remaining) / 3600
-            let minutes = (Int(remaining) % 3600) / 60
-            let seconds = Int(remaining) % 60
-            
-            DispatchQueue.main.async {
-                self.timeRemainingString = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        case .evening:
+            eveningTimer?.invalidate()
+            eveningTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                guard let self = self, let target = self.eveningTargetDate else { return }
+                let remaining = target.timeIntervalSince(Date())
+                DispatchQueue.main.async {
+                    if remaining <= 0 {
+                        self.eveningTimeRemaining = "Time's up!"
+                        self.eveningTimer?.invalidate()
+                        self.eveningTimer = nil
+                    } else {
+                        let h = Int(remaining) / 3600
+                        let m = (Int(remaining) % 3600) / 60
+                        let s = Int(remaining) % 60
+                        self.eveningTimeRemaining = String(format: "%02d:%02d:%02d", h, m, s)
+                    }
+                }
             }
         }
     }
@@ -155,10 +440,10 @@ class PillReminderManager: ObservableObject {
         }
     }
     
-    private func cancelAllReminders() {
-        var identifiers = ["pill_reminder_main"]
+    private func cancelReminders(prefix: String) {
+        var identifiers = ["\(prefix)_reminder_main"]
         for i in 1...10 {
-            identifiers.append("pill_reminder_followup_\(i)")
+            identifiers.append("\(prefix)_reminder_followup_\(i)")
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
     }
