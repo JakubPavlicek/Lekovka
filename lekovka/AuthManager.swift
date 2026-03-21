@@ -19,7 +19,7 @@ class AuthManager: ObservableObject {
     }
     
     // MARK: - API Base URL (change this to point to your server)
-    static let apiBaseURL = "http://192.168.31.113:8080/api/v1"
+    static let apiBaseURL = "http://3.65.52.122:8080/api/v1"
     
     // MARK: - Computed Properties
     
