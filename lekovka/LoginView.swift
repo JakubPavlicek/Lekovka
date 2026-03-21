@@ -51,38 +51,39 @@ struct LoginView: View {
     
     // MARK: - Branding Section
     private var brandingSection: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 8) {
             // App icon with glow
             ZStack {
                 // Outer glow rings
                 Circle()
                     .fill(Color(hex: "667eea").opacity(0.08))
-                    .frame(width: 160, height: 160)
+                    .frame(width: 130, height: 130)
                 
                 Circle()
                     .fill(Color(hex: "667eea").opacity(0.05))
-                    .frame(width: 200, height: 200)
+                    .frame(width: 170, height: 170)
                 
                 // Icon circle
                 ZStack {
                     Circle()
                         .fill(accentGradient)
-                        .frame(width: 110, height: 110)
-                        .shadow(color: Color(hex: "667eea").opacity(0.5), radius: 24, x: 0, y: 10)
+                        .frame(width: 90, height: 90)
+                        .shadow(color: Color(hex: "667eea").opacity(0.5), radius: 18, x: 0, y: 8)
                     
                     Image(systemName: "pills.circle.fill")
-                        .font(.system(size: 52))
+                        .font(.system(size: 46))
                         .foregroundColor(.white)
                 }
             }
+            .padding(.bottom, 12)
             
             // App name
-            Text("Lekovka")
-                .font(.system(size: 36, weight: .bold, design: .rounded))
+            Text("Lékovka")
+                .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundStyle(accentGradient)
             
             Text("Your pill reminder companion")
-                .font(.system(size: 16, weight: .medium, design: .rounded))
+                .font(.system(size: 14, weight: .medium, design: .rounded))
                 .foregroundColor(Color.white.opacity(0.45))
         }
     }
