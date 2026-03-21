@@ -97,6 +97,10 @@ class BLEBackgroundManager: NSObject, ObservableObject, CBCentralManagerDelegate
         switch central.state {
         case .poweredOn:
             connectionStatus = "Bluetooth ready"
+            // Auto-connect: start scanning as soon as Bluetooth is ready
+            if !isConnected && connectedPeripheral == nil {
+                startScanning()
+            }
         case .poweredOff:
             connectionStatus = "Bluetooth is off"
             isConnected = false
