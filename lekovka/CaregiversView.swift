@@ -387,6 +387,15 @@ struct CaregiversView: View {
                     withAnimation(.spring(response: 0.4)) {
                         submitResult = .success
                     }
+                    
+                    // Hide the success message after a short delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                        if self.submitResult == .success {
+                            withAnimation(.spring(response: 0.4)) {
+                                self.submitResult = nil
+                            }
+                        }
+                    }
                 } else {
                     withAnimation(.spring(response: 0.4)) {
                         submitResult = .error("Server error (HTTP \(httpResponse.statusCode))")
