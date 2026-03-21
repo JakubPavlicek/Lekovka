@@ -233,34 +233,34 @@ struct TimerView: View {
                 }
                 .padding(.top, 4)
             } else {
-                // Time picker
-                HStack(spacing: 4) {
-                    Picker("Hours", selection: hour) {
-                        ForEach(0..<24, id: \.self) { h in
-                            Text(String(format: "%02d", h))
-                                .tag(h)
-                                .foregroundColor(.white)
+                // Time picker (native DatePicker allows infinite scrolling)
+                let timeBinding = Binding<Date>(
+                    get: {
+                        var components = DateComponents()
+                        components.hour = hour.wrappedValue
+                        components.minute = minute.wrappedValue
+                        return Calendar.current.date(from: components) ?? Date()
+                    },
+                    set: { newDate in
+                        let components = Calendar.current.dateComponents([.hour, .minute], from: newDate)
+                        if let h = components.hour, let m = components.minute {
+                            hour.wrappedValue = h
+                            minute.wrappedValue = m
                         }
                     }
-                    .pickerStyle(.wheel)
-                    .frame(width: 70, height: 130)
-                    .clipped()
-                    
-                    Text(":")
-                        .font(.system(size: 30, weight: .bold, design: .monospaced))
-                        .foregroundColor(Color(hex: iconColor))
-                    
-                    Picker("Minutes", selection: minute) {
-                        ForEach(0..<60, id: \.self) { m in
-                            Text(String(format: "%02d", m))
-                                .tag(m)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(width: 70, height: 130)
-                    .clipped()
-                }
+                )
+                
+                DatePicker(
+                    "Set \(title) time",
+                    selection: timeBinding,
+                    displayedComponents: .hourAndMinute
+                )
+                .datePickerStyle(.wheel)
+                .labelsHidden()
+                .colorScheme(.dark)
+                .environment(\.timeZone, TimeZone.current)
+                .frame(height: 130)
+                .clipped()
             }
         }
         .padding(22)
