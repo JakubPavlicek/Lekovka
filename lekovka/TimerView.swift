@@ -10,6 +10,9 @@ struct TimerView: View {
     @State private var isSaving: Bool = false
     @State private var saveConfirmation: String? = nil
     
+    @State private var showMorningCancelAlert: Bool = false
+    @State private var showEveningCancelAlert: Bool = false
+    
     // Gradient colors
     private let morningGradient = LinearGradient(
         colors: [Color(hex: "f7971e"), Color(hex: "ffd200")],
@@ -42,6 +45,7 @@ struct TimerView: View {
                         icon: "sun.max.fill",
                         iconColor: "ffd200",
                         gradient: morningGradient,
+                        showCancelAlert: $showMorningCancelAlert,
                         hour: $reminderManager.morningHour,
                         minute: $reminderManager.morningMinute,
                         isActive: reminderManager.isMorningActive,
@@ -60,6 +64,7 @@ struct TimerView: View {
                         icon: "moon.stars.fill",
                         iconColor: "764ba2",
                         gradient: eveningGradient,
+                        showCancelAlert: $showEveningCancelAlert,
                         hour: $reminderManager.eveningHour,
                         minute: $reminderManager.eveningMinute,
                         isActive: reminderManager.isEveningActive,
@@ -105,6 +110,7 @@ struct TimerView: View {
         icon: String,
         iconColor: String,
         gradient: LinearGradient,
+        showCancelAlert: Binding<Bool>,
         hour: Binding<Int>,
         minute: Binding<Int>,
         isActive: Bool,
@@ -189,7 +195,7 @@ struct TimerView: View {
                     
                     HStack(spacing: 12) {
                         Button(action: {
-                            withAnimation(.spring(response: 0.4)) { onStop() }
+                            showCancelAlert.wrappedValue = true
                         }) {
                             HStack(spacing: 5) {
                                 Image(systemName: "xmark.circle.fill")
@@ -261,6 +267,14 @@ struct TimerView: View {
                 .fill(cardColor)
                 .shadow(color: Color.black.opacity(0.3), radius: 16, x: 0, y: 8)
         )
+        .alert("Cancel \(title) Timer?", isPresented: showCancelAlert) {
+            Button("Keep Timer", role: .cancel) { }
+            Button("Yes, Cancel", role: .destructive) {
+                withAnimation(.spring(response: 0.4)) { onStop() }
+            }
+        } message: {
+            Text("This will stop the reminders and delete the schedule from the server.")
+        }
     }
     
     // MARK: - Save & Sync Button
