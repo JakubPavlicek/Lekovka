@@ -93,9 +93,10 @@ struct ContentView: View {
         }
         // Listen for BLE pill confirmation → auto-mark pills taken
         .onChange(of: bleManager.lastReceivedString) { newValue in
-            if newValue.lowercased().contains("taken") || newValue.lowercased().contains("pill") {
+            let lower = newValue.lowercased()
+            if lower.contains("medicaments-taken-confirmation") || lower.contains("taken") || lower.contains("pill") {
                 withAnimation(.spring(response: 0.5)) {
-                    reminderManager.markPillsTaken()
+                    reminderManager.markClosestPillsTaken()
                 }
             }
         }

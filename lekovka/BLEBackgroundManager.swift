@@ -202,6 +202,11 @@ class BLEBackgroundManager: NSObject, ObservableObject, CBCentralManagerDelegate
                 // RX characteristic (Phone → ESP): For sending data
                 rxCharacteristic = characteristic
                 print("RX characteristic found")
+                
+                // Once RX is found, send the initial time configuration handshake
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                    self?.postNtcTime()
+                }
             }
         }
     }
@@ -226,11 +231,16 @@ class BLEBackgroundManager: NSObject, ObservableObject, CBCentralManagerDelegate
         guard let data = characteristic.value else { return }
         
         // ============================================================
-        // MARK: - KMP INTEGRATION POINT
-        // ============================================================
-        // TODO: Pass the received 'data' to your Kotlin Multiplatform shared module
-        // Example:
-        // YourKMPSharedClass.shared.processBluetoothData(data: data)
+        // Parse incoming ESP32 JSON
+        if let jsonObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let action = jsonObject["action"] as? String {
+            if action == "medicaments-taken-confirmation" {
+                postIntakeLog()
+            }
+            else if action == "heartbeat" {
+                postHeartbeat(batteryLevel: 100)
+            }
+        }
         // ============================================================
         
         // Convert data to string for display
@@ -277,8 +287,9 @@ class BLEBackgroundManager: NSObject, ObservableObject, CBCentralManagerDelegate
     
     // MARK: - Sending Data
     func sendData(_ data: Data) {
+        // Send data directly using RX characteristic
         guard let peripheral = connectedPeripheral,
-              let characteristic = targetCharacteristic else {
+              let characteristic = rxCharacteristic else {
             connectionStatus = "Not connected"
             return
         }
@@ -293,5 +304,72 @@ class BLEBackgroundManager: NSObject, ObservableObject, CBCentralManagerDelegate
         if let data = string.data(using: .utf8) {
             sendData(data)
         }
+    }
+    
+    // MARK: - NTC Auto-Handshake
+    func postNtcTime() {
+        let timestamp = Int(Date().timeIntervalSince1970)
+        let payload: [String: Any] = [
+            "action": "post-ntc-time",
+            "current_timestamp": timestamp
+        ]
+        if let data = try? JSONSerialization.data(withJSONObject: payload),
+           let jsonString = String(data: data, encoding: .utf8) {
+            sendString(jsonString)
+            print("🕒 Sent post-ntc-time: \(jsonString)")
+        }
+    }
+    
+    // MARK: - Backend Intake Log Sync
+    func postIntakeLog() {
+        // Base API URL is managed globally by AuthManager. 
+        // We trim trailing slash if it exists to build safe endpoints.
+        let baseURL = AuthManager.apiBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard let url = URL(string: "\(baseURL)/intake-logs") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") {
+            request.setValue(userId, forHTTPHeaderField: "X-User-ID")
+        }
+        
+        URLSession.shared.dataTask(with: request) { _, response, error in
+            if let error = error {
+                print("❌ Failed to POST /intake-logs: \(error.localizedDescription)")
+                return
+            }
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📝 POST /intake-logs response: HTTP \(httpResponse.statusCode)")
+            }
+        }.resume()
+    }
+    
+    // MARK: - Backend Heartbeat Sync
+    func postHeartbeat(batteryLevel: Int) {
+        let baseURL = AuthManager.apiBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard let url = URL(string: "\(baseURL)/device/heartbeat") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") {
+            request.setValue(userId, forHTTPHeaderField: "X-User-ID")
+        }
+        
+        let body: [String: Any] = ["batteryLevel": batteryLevel]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        URLSession.shared.dataTask(with: request) { _, response, error in
+            if let error = error {
+                print("❌ Failed to POST /device/heartbeat: \(error.localizedDescription)")
+                return
+            }
+            if let httpResponse = response as? HTTPURLResponse {
+                print("💓 POST /device/heartbeat response: HTTP \(httpResponse.statusCode)")
+            }
+        }.resume()
     }
 }

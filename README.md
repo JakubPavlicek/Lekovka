@@ -14,7 +14,7 @@ SwiftUI application for pill reminder with ESP32 integration.
   }
 ]" where i need to save the schedule ids (id in the response body) for both morning and evening time. Because i then need to use the ID to DELETE /schedules/{id} REST API endpoint that takes the ID of the schedule.
 
-3. BLE page - scanning for ESP32 device and receiving JSON data that the pills were taken (this will disable the timer and notification)
+3. BLE page - scanning for ESP32 device and receiving JSON data that the pills were taken, the 'medicaments-taken-confirmation' ESP32 -> iPhone app endpoint will be called when the pills are taken from the ESP32 side (the user will press the button on the ESP32 to confirm that the pills were taken) (this can be handled in the background as well - no need to visualize it). This will make the closest-time timer to be marked as taken. When i receive the 'medicaments-taken-confirmation' i need to make the REST API call to POST /intake-logs which takes only X-User-Id header. After successfull login and bluetooth connection to the ESP32, i need to send the UNIX timestamp using the 'post-ntc-time' to the ESP32 (this can be handled in the background as well - no need to visualize it). When i receive 'heartbeat' over the Bluetooth from the ESP32, i need to send the info to the REST API POST /intake-logs which also takes only X-User-Id header. And finally whenever i set the pill timers i need to send the info to the ESP32 using the 'post-configuration-schedule' where the 'interval_alert_trigger_minutes' property is 'notify_after_minutes' which i have saved in the persistent storage, the 'alert' property is the time in UNIX.
   - **The Phone -> ESP32 API**
     - post-configuration-schedule
         ```
@@ -49,10 +49,10 @@ SwiftUI application for pill reminder with ESP32 integration.
             }
         }
         ```
-    - heartbreak
+    - heartbeat
         ```
         {
-            action: "heartbreak"
+            action: "heartbeat"
         }
         ```
     

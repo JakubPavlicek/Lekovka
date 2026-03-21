@@ -182,7 +182,7 @@ struct BLEView: View {
                    bleManager.lastReceivedString.lowercased().contains("pill") {
                     Button(action: {
                         withAnimation(.spring(response: 0.5)) {
-                            reminderManager.markPillsTaken()
+                            reminderManager.markClosestPillsTaken()
                         }
                     }) {
                         HStack(spacing: 4) {

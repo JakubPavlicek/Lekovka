@@ -341,10 +341,27 @@ class PillReminderManager: ObservableObject {
         cancelReminders(prefix: "evening") // Clear any remaining alarms for today
     }
     
-    /// Legacy: marks both as taken
-    func markPillsTaken() {
-        if !morningPillsTaken { markMorningPillsTaken() }
-        if !eveningPillsTaken { markEveningPillsTaken() }
+    /// Figures out which pill timer is the closest chronologically and marks it as taken
+    func markClosestPillsTaken() {
+        let now = Date()
+        var morningDiff: TimeInterval = .infinity
+        var eveningDiff: TimeInterval = .infinity
+        
+        if isMorningActive, let target = morningTargetDate {
+            morningDiff = abs(target.timeIntervalSince(now))
+        }
+        if isEveningActive, let target = eveningTargetDate {
+            eveningDiff = abs(target.timeIntervalSince(now))
+        }
+        
+        if morningDiff == .infinity && eveningDiff == .infinity {
+            if !morningPillsTaken { markMorningPillsTaken() }
+            else { markEveningPillsTaken() }
+        } else if morningDiff < eveningDiff {
+            markMorningPillsTaken()
+        } else {
+            markEveningPillsTaken()
+        }
     }
     
     // MARK: - Reset
@@ -403,16 +420,19 @@ class PillReminderManager: ObservableObject {
     // MARK: - Schedule Configuration JSON (for ESP32)
     /// Builds the post-configuration-schedule JSON to send to ESP32.
     func buildConfigurationScheduleJSON() -> String? {
+        let mAlert = morningTargetDate?.timeIntervalSince1970 ?? Date().timeIntervalSince1970
+        let eAlert = eveningTargetDate?.timeIntervalSince1970 ?? Date().timeIntervalSince1970
+        
         let payload: [String: Any] = [
             "action": "post-configuration-schedule",
             "body": [
                 "morning": [
                     "interval_alert_trigger_minutes": reminderIntervalMinutes,
-                    "alert": formattedMorningTime()
+                    "alert": Int(mAlert)
                 ],
                 "evening": [
                     "interval_alert_trigger_minutes": reminderIntervalMinutes,
-                    "alert": formattedEveningTime()
+                    "alert": Int(eAlert)
                 ]
             ]
         ]
