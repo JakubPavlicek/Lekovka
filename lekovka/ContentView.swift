@@ -1,9 +1,11 @@
 import SwiftUI
 import UserNotifications
 
-// MARK: - Content View (Tab Root)
-/// Main tab-based navigation for the Lekovka pill reminder app.
+// MARK: - Content View (Root)
+/// Root view that shows LoginView or the main tab-based navigation
+/// depending on whether the user has already logged in.
 struct ContentView: View {
+    @StateObject private var authManager = AuthManager()
     @StateObject private var bleManager = BLEBackgroundManager()
     @StateObject private var apiService = APIService()
     @StateObject private var reminderManager = PillReminderManager()
@@ -33,6 +35,18 @@ struct ContentView: View {
     }
     
     var body: some View {
+        Group {
+            if authManager.isLoggedIn {
+                mainTabView
+            } else {
+                LoginView(authManager: authManager)
+            }
+        }
+        .animation(.easeInOut(duration: 0.4), value: authManager.isLoggedIn)
+    }
+    
+    // MARK: - Main Tab View
+    private var mainTabView: some View {
         TabView(selection: $selectedTab) {
             TimerView(reminderManager: reminderManager)
                 .tabItem {
