@@ -250,17 +250,37 @@ struct TimerView: View {
                     }
                 )
                 
-                DatePicker(
-                    "Set \(title) time",
-                    selection: timeBinding,
-                    displayedComponents: .hourAndMinute
-                )
-                .datePickerStyle(.wheel)
-                .labelsHidden()
-                .colorScheme(.dark)
-                .environment(\.timeZone, TimeZone.current)
-                .frame(height: 130)
-                .clipped()
+                ZStack {
+                    // Premium Glassmorphic Background for the Picker
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.black.opacity(0.25))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [Color(hex: iconColor).opacity(0.4), .clear],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1
+                                )
+                        )
+                    
+                    DatePicker(
+                        "Set \(title) time",
+                        selection: timeBinding,
+                        displayedComponents: .hourAndMinute
+                    )
+                    .datePickerStyle(.wheel)
+                    .labelsHidden()
+                    .colorScheme(.dark)
+                    .environment(\.timeZone, TimeZone.current)
+                    .scaleEffect(1.05) // Make the wheel slightly more prominent
+                    .frame(height: 130)
+                    .clipped()
+                }
+                .frame(height: 140)
+                .padding(.horizontal, 10)
             }
         }
         .padding(22)
