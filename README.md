@@ -32,6 +32,13 @@ SwiftUI application for pill reminder with ESP32 integration.
             }
         }
         ```
+    - get-ntc-time
+        ```
+        {
+            action: "get-ntc-time",
+            current_timestamp: unixtimestamp
+        }
+        ```
   - **ESP32 -> Phone**
     - medicaments-taken-confirmation
         ```
