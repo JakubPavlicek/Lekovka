@@ -13,6 +13,8 @@ struct TimerView: View {
     @State private var showMorningCancelAlert: Bool = false
     @State private var showEveningCancelAlert: Bool = false
     
+    @State private var showInfo: Bool = false
+    
     @AppStorage("lekovka_notify_after_minutes") private var reminderIntervalMinutes: Int = 1
     
     // Gradient colors
@@ -91,9 +93,6 @@ struct TimerView: View {
                     if reminderManager.allPillsTaken {
                         resetButton
                     }
-                    
-                    // MARK: - Info card
-                    infoCard
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
@@ -103,6 +102,33 @@ struct TimerView: View {
             .navigationTitle("Pill Timer")
             .navigationBarTitleDisplayMode(.large)
             .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showInfo = true }) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 20))
+                            .foregroundColor(Color(hex: "667eea"))
+                    }
+                }
+            }
+            .sheet(isPresented: $showInfo) {
+                ZStack {
+                    Color(hex: "0f0f1a").ignoresSafeArea()
+                    VStack {
+                        Capsule()
+                            .fill(Color.white.opacity(0.2))
+                            .frame(width: 40, height: 5)
+                            .padding(.top, 12)
+                        
+                        infoCard
+                            .padding(.top, 20)
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                }
+                .presentationDetents([.height(280)])
+            }
         }
     }
     

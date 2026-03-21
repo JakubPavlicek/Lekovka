@@ -11,6 +11,7 @@ struct CaregiversView: View {
     @State private var isSubmitting: Bool = false
     @State private var submitResult: SubmitResult?
     @FocusState private var focusedFieldIndex: Int?
+    @State private var showInfo: Bool = false
     
     enum SubmitResult: Equatable {
         case success
@@ -47,9 +48,6 @@ struct CaregiversView: View {
                     if let result = submitResult {
                         resultBanner(result: result)
                     }
-                    
-                    // MARK: - Info Section
-                    infoCard
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
@@ -59,6 +57,33 @@ struct CaregiversView: View {
             .navigationTitle("Caregivers")
             .navigationBarTitleDisplayMode(.large)
             .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showInfo = true }) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 20))
+                            .foregroundColor(Color(hex: "ffd200"))
+                    }
+                }
+            }
+            .sheet(isPresented: $showInfo) {
+                ZStack {
+                    Color(hex: "0f0f1a").ignoresSafeArea()
+                    VStack {
+                        Capsule()
+                            .fill(Color.white.opacity(0.2))
+                            .frame(width: 40, height: 5)
+                            .padding(.top, 12)
+                        
+                        infoCard
+                            .padding(.top, 20)
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                }
+                .presentationDetents([.height(260)])
+            }
         }
     }
     
