@@ -7,11 +7,32 @@ import Combine
 class PillReminderManager: ObservableObject {
     
     // MARK: - Published Properties (Morning)
-    @Published var morningHour: Int = 8
-    @Published var morningMinute: Int = 0
-    @Published var isMorningActive: Bool = false
-    @Published var morningPillsTaken: Bool = false
-    @Published var morningPillsTakenTime: Date? = nil
+    @Published var morningHour: Int = UserDefaults.standard.object(forKey: "lekovka_morning_hour") as? Int ?? 8 {
+        didSet { UserDefaults.standard.set(morningHour, forKey: "lekovka_morning_hour") }
+    }
+    @Published var morningMinute: Int = UserDefaults.standard.object(forKey: "lekovka_morning_minute") as? Int ?? 0 {
+        didSet { UserDefaults.standard.set(morningMinute, forKey: "lekovka_morning_minute") }
+    }
+    @Published var isMorningActive: Bool = UserDefaults.standard.bool(forKey: "lekovka_morning_active") {
+        didSet { UserDefaults.standard.set(isMorningActive, forKey: "lekovka_morning_active") }
+    }
+    @Published var morningPillsTaken: Bool = UserDefaults.standard.bool(forKey: "lekovka_morning_taken") {
+        didSet { UserDefaults.standard.set(morningPillsTaken, forKey: "lekovka_morning_taken") }
+    }
+    @Published var morningPillsTakenTime: Date? = {
+        if let interval = UserDefaults.standard.object(forKey: "lekovka_morning_taken_time") as? Double {
+            return Date(timeIntervalSince1970: interval)
+        }
+        return nil
+    }() {
+        didSet {
+            if let date = morningPillsTakenTime {
+                UserDefaults.standard.set(date.timeIntervalSince1970, forKey: "lekovka_morning_taken_time")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lekovka_morning_taken_time")
+            }
+        }
+    }
     @Published var morningTimeRemaining: String = ""
     @Published var morningScheduleID: Int? {
         didSet {
@@ -24,11 +45,32 @@ class PillReminderManager: ObservableObject {
     }
     
     // MARK: - Published Properties (Evening)
-    @Published var eveningHour: Int = 20
-    @Published var eveningMinute: Int = 0
-    @Published var isEveningActive: Bool = false
-    @Published var eveningPillsTaken: Bool = false
-    @Published var eveningPillsTakenTime: Date? = nil
+    @Published var eveningHour: Int = UserDefaults.standard.object(forKey: "lekovka_evening_hour") as? Int ?? 20 {
+        didSet { UserDefaults.standard.set(eveningHour, forKey: "lekovka_evening_hour") }
+    }
+    @Published var eveningMinute: Int = UserDefaults.standard.object(forKey: "lekovka_evening_minute") as? Int ?? 0 {
+        didSet { UserDefaults.standard.set(eveningMinute, forKey: "lekovka_evening_minute") }
+    }
+    @Published var isEveningActive: Bool = UserDefaults.standard.bool(forKey: "lekovka_evening_active") {
+        didSet { UserDefaults.standard.set(isEveningActive, forKey: "lekovka_evening_active") }
+    }
+    @Published var eveningPillsTaken: Bool = UserDefaults.standard.bool(forKey: "lekovka_evening_taken") {
+        didSet { UserDefaults.standard.set(eveningPillsTaken, forKey: "lekovka_evening_taken") }
+    }
+    @Published var eveningPillsTakenTime: Date? = {
+        if let interval = UserDefaults.standard.object(forKey: "lekovka_evening_taken_time") as? Double {
+            return Date(timeIntervalSince1970: interval)
+        }
+        return nil
+    }() {
+        didSet {
+            if let date = eveningPillsTakenTime {
+                UserDefaults.standard.set(date.timeIntervalSince1970, forKey: "lekovka_evening_taken_time")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lekovka_evening_taken_time")
+            }
+        }
+    }
     @Published var eveningTimeRemaining: String = ""
     @Published var eveningScheduleID: Int? {
         didSet {
@@ -62,8 +104,35 @@ class PillReminderManager: ObservableObject {
     // MARK: - Private Properties
     private var morningTimer: Timer?
     private var eveningTimer: Timer?
-    private var morningTargetDate: Date?
-    private var eveningTargetDate: Date?
+    private var morningTargetDate: Date? = {
+        if let interval = UserDefaults.standard.object(forKey: "lekovka_morning_target") as? Double {
+            return Date(timeIntervalSince1970: interval)
+        }
+        return nil
+    }() {
+        didSet {
+            if let d = morningTargetDate {
+                UserDefaults.standard.set(d.timeIntervalSince1970, forKey: "lekovka_morning_target")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lekovka_morning_target")
+            }
+        }
+    }
+    
+    private var eveningTargetDate: Date? = {
+        if let interval = UserDefaults.standard.object(forKey: "lekovka_evening_target") as? Double {
+            return Date(timeIntervalSince1970: interval)
+        }
+        return nil
+    }() {
+        didSet {
+            if let d = eveningTargetDate {
+                UserDefaults.standard.set(d.timeIntervalSince1970, forKey: "lekovka_evening_target")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lekovka_evening_target")
+            }
+        }
+    }
     
     /// How many minutes between repeat reminders.
     var reminderIntervalMinutes: Int {
@@ -78,6 +147,15 @@ class PillReminderManager: ObservableObject {
         if let eID = UserDefaults.standard.object(forKey: "lekovka_evening_schedule_id") as? Int {
             self.eveningScheduleID = eID
         }
+        
+        // Resume local visual countdowns if active and not marked taken yet
+        if isMorningActive && !morningPillsTaken && morningTargetDate != nil {
+            startCountdownTimer(for: .morning)
+        }
+        if isEveningActive && !eveningPillsTaken && eveningTargetDate != nil {
+            startCountdownTimer(for: .evening)
+        }
+        
         requestNotificationPermission()
     }
     
