@@ -90,14 +90,27 @@ class AuthManager: ObservableObject {
                     return
                 }
                 
-                // Parse the user ID from the response
+                // Parse the user ID and settings from the response
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-                       let id = json["id"] {
-                        let userIdString = "\(id)"
-                        self.persistLogin(userId: userIdString, email: email)
+                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                        
+                        // Parse user settings if present
+                        if let notifyMins = json["notify_after_minutes"] as? Int {
+                            UserDefaults.standard.set(notifyMins, forKey: "lekovka_notify_after_minutes")
+                        }
+                        if let notifyRetries = json["notify_caregivers_after_retries"] as? Int {
+                            UserDefaults.standard.set(notifyRetries, forKey: "lekovka_notify_caregivers_after_retries")
+                        }
+                        
+                        // Parse user ID
+                        if let id = json["id"] {
+                            let userIdString = "\(id)"
+                            self.persistLogin(userId: userIdString, email: email)
+                        } else {
+                            self.errorMessage = "Could not parse user ID from response"
+                        }
                     } else {
-                        self.errorMessage = "Could not parse user ID from response"
+                        self.errorMessage = "Could not parse JSON response"
                     }
                 } catch {
                     self.errorMessage = "Response parse error: \(error.localizedDescription)"

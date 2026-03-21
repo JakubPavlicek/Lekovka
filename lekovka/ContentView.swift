@@ -7,7 +7,6 @@ import UserNotifications
 struct ContentView: View {
     @StateObject private var authManager = AuthManager()
     @StateObject private var bleManager = BLEBackgroundManager()
-    @StateObject private var apiService = APIService()
     @StateObject private var reminderManager = PillReminderManager()
     
     @State private var selectedTab: Int = 0
@@ -48,31 +47,31 @@ struct ContentView: View {
     // MARK: - Main Tab View
     private var mainTabView: some View {
         TabView(selection: $selectedTab) {
-            TimerView(reminderManager: reminderManager, bleManager: bleManager)
-                .tabItem {
-                    Image(systemName: "timer.circle.fill")
-                    Text("Timer")
-                }
-                .tag(0)
-            
             BLEView(bleManager: bleManager, reminderManager: reminderManager)
                 .tabItem {
                     Image(systemName: "antenna.radiowaves.left.and.right")
                     Text("BLE")
                 }
-                .tag(1)
+                .tag(0)
             
-            APIView(apiService: apiService, reminderManager: reminderManager)
+            TimerView(reminderManager: reminderManager, bleManager: bleManager)
                 .tabItem {
-                    Image(systemName: "icloud.and.arrow.up.fill")
-                    Text("Report")
+                    Image(systemName: "timer.circle.fill")
+                    Text("Timer")
                 }
-                .tag(2)
+                .tag(1)
             
             CaregiversView()
                 .tabItem {
                     Image(systemName: "person.2.fill")
                     Text("Caregivers")
+                }
+                .tag(2)
+            
+            SettingsView()
+                .tabItem {
+                    Image(systemName: "gearshape.fill")
+                    Text("Settings")
                 }
                 .tag(3)
         }

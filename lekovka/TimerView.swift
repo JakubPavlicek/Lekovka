@@ -13,6 +13,8 @@ struct TimerView: View {
     @State private var showMorningCancelAlert: Bool = false
     @State private var showEveningCancelAlert: Bool = false
     
+    @AppStorage("lekovka_notify_after_minutes") private var reminderIntervalMinutes: Int = 1
+    
     // Gradient colors
     private let morningGradient = LinearGradient(
         colors: [Color(hex: "f7971e"), Color(hex: "ffd200")],
@@ -368,7 +370,7 @@ struct TimerView: View {
             VStack(alignment: .leading, spacing: 8) {
                 infoRow(icon: "1.circle.fill", text: "Set your morning & evening pill times")
                 infoRow(icon: "2.circle.fill", text: "Tap Save to sync with ESP32 and server")
-                infoRow(icon: "3.circle.fill", text: "Reminders repeat every 1 min until taken")
+                infoRow(icon: "3.circle.fill", text: "Reminders repeat every \(max(1, reminderIntervalMinutes)) min until taken")
                 infoRow(icon: "4.circle.fill", text: "Confirm via ESP32 or tap \"Taken!\" to stop")
             }
         }

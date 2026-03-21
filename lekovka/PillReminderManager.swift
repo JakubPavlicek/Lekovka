@@ -66,7 +66,10 @@ class PillReminderManager: ObservableObject {
     private var eveningTargetDate: Date?
     
     /// How many minutes between repeat reminders.
-    private let reminderIntervalMinutes: Int = 1
+    var reminderIntervalMinutes: Int {
+        let saved = UserDefaults.standard.integer(forKey: "lekovka_notify_after_minutes")
+        return saved > 0 ? saved : 1
+    }
     
     init() {
         if let mID = UserDefaults.standard.object(forKey: "lekovka_morning_schedule_id") as? Int {

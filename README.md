@@ -32,10 +32,10 @@ SwiftUI application for pill reminder with ESP32 integration.
             }
         }
         ```
-    - get-ntc-time
+    - post-ntc-time
         ```
         {
-            action: "get-ntc-time",
+            action: "post-ntc-time",
             current_timestamp: unixtimestamp
         }
         ```
