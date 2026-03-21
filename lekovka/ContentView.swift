@@ -10,6 +10,7 @@ struct ContentView: View {
     @StateObject private var reminderManager = PillReminderManager()
     
     @State private var selectedTab: Int = 0
+    @Environment(\.scenePhase) private var scenePhase
     
     // Tab bar colors
     init() {
@@ -78,6 +79,14 @@ struct ContentView: View {
         .tint(Color(hex: "667eea"))
         .onAppear {
             reminderManager.requestNotificationPermission()
+        }
+        // Auto-clear notification badge when the app opens
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                // Clear the little red '1' badge on the home screen icon
+                UNUserNotificationCenter.current().setBadgeCount(0) { _ in }
+                UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+            }
         }
         // Listen for BLE pill confirmation → auto-mark pills taken
         .onChange(of: bleManager.lastReceivedString) { newValue in
