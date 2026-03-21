@@ -94,7 +94,7 @@ struct TimerView: View {
                         resetButton
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 12)
                 .padding(.top, 12)
                 .padding(.bottom, 40)
             }
@@ -177,14 +177,20 @@ struct TimerView: View {
                         Text("Taken at \(time, formatter: timeFormatter)")
                             .font(.system(size: 12, design: .rounded))
                             .foregroundColor(Color(hex: "38ef7d").opacity(0.8))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
                     } else if isActive {
                         Text("Scheduled for \(formattedTime)")
                             .font(.system(size: 12, design: .rounded))
                             .foregroundColor(Color.white.opacity(0.45))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
                     } else {
                         Text("Set your \(title.lowercased()) time")
                             .font(.system(size: 12, design: .rounded))
                             .foregroundColor(Color.white.opacity(0.35))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
                     }
                 }
                 
@@ -195,7 +201,7 @@ struct TimerView: View {
                     Text("Done")
                         .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(Color(hex: "38ef7d"))
-                        .padding(.horizontal, 10)
+                        .padding(.horizontal, 8)
                         .padding(.vertical, 5)
                         .background(
                             Capsule().fill(Color(hex: "38ef7d").opacity(0.15))
@@ -204,7 +210,7 @@ struct TimerView: View {
                     Text("Active")
                         .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(Color(hex: iconColor))
-                        .padding(.horizontal, 10)
+                        .padding(.horizontal, 8)
                         .padding(.vertical, 5)
                         .background(
                             Capsule().fill(Color(hex: iconColor).opacity(0.15))
@@ -231,7 +237,7 @@ struct TimerView: View {
                             }
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
-                            .padding(.horizontal, 18)
+                            .frame(maxWidth: .infinity)
                             .padding(.vertical, 11)
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
@@ -248,7 +254,7 @@ struct TimerView: View {
                             }
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
-                            .padding(.horizontal, 18)
+                            .frame(maxWidth: .infinity)
                             .padding(.vertical, 11)
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
@@ -301,15 +307,15 @@ struct TimerView: View {
                     .labelsHidden()
                     .colorScheme(.dark)
                     .environment(\.timeZone, TimeZone.current)
-                    .scaleEffect(1.05) // Make the wheel slightly more prominent
-                    .frame(height: 130)
+                    .scaleEffect(0.9) // Scale down to fit SE devices natively
+                    .frame(maxWidth: .infinity, maxHeight: 130)
                     .clipped()
                 }
                 .frame(height: 140)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 0)
             }
         }
-        .padding(22)
+        .padding(14)
         .background(
             RoundedRectangle(cornerRadius: 24)
                 .fill(cardColor)
