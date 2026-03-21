@@ -156,6 +156,9 @@ class PillReminderManager: ObservableObject {
             startCountdownTimer(for: .evening)
         }
         
+        // Auto-reset rollover tracking
+        checkAndResetForNewDay()
+        
         requestNotificationPermission()
     }
     
@@ -325,13 +328,17 @@ class PillReminderManager: ObservableObject {
     func markMorningPillsTaken() {
         morningPillsTaken = true
         morningPillsTakenTime = Date()
-        stopMorningTimer()
+        morningTimer?.invalidate()
+        morningTimer = nil
+        cancelReminders(prefix: "morning") // Clear any remaining alarms for today
     }
     
     func markEveningPillsTaken() {
         eveningPillsTaken = true
         eveningPillsTakenTime = Date()
-        stopEveningTimer()
+        eveningTimer?.invalidate()
+        eveningTimer = nil
+        cancelReminders(prefix: "evening") // Clear any remaining alarms for today
     }
     
     /// Legacy: marks both as taken
@@ -341,6 +348,50 @@ class PillReminderManager: ObservableObject {
     }
     
     // MARK: - Reset
+    func checkAndResetForNewDay() {
+        let calendar = Calendar.current
+        let now = Date()
+        var needsMorningRestart = false
+        var needsEveningRestart = false
+        
+        // Morning Rollover check
+        if isMorningActive {
+            if morningPillsTaken, let takenTime = morningPillsTakenTime {
+                if !calendar.isDate(now, inSameDayAs: takenTime) {
+                    morningPillsTaken = false
+                    morningPillsTakenTime = nil
+                    needsMorningRestart = true
+                }
+            } else if !morningPillsTaken, let targetDate = morningTargetDate {
+                if !calendar.isDate(now, inSameDayAs: targetDate) && targetDate < now {
+                    needsMorningRestart = true
+                }
+            }
+        }
+        
+        // Evening Rollover check
+        if isEveningActive {
+            if eveningPillsTaken, let takenTime = eveningPillsTakenTime {
+                if !calendar.isDate(now, inSameDayAs: takenTime) {
+                    eveningPillsTaken = false
+                    eveningPillsTakenTime = nil
+                    needsEveningRestart = true
+                }
+            } else if !eveningPillsTaken, let targetDate = eveningTargetDate {
+                if !calendar.isDate(now, inSameDayAs: targetDate) && targetDate < now {
+                    needsEveningRestart = true
+                }
+            }
+        }
+        
+        if needsMorningRestart {
+            startMorningTimer()
+        }
+        if needsEveningRestart {
+            startEveningTimer()
+        }
+    }
+    
     func resetForNewDay() {
         morningPillsTaken = false
         morningPillsTakenTime = nil

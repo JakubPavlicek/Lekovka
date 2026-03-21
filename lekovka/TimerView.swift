@@ -241,9 +241,10 @@ struct TimerView: View {
                             .padding(.vertical, 11)
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color(hex: "e74c3c").opacity(0.8))
+                                    .fill(Color(hex: "e74c3c").opacity(timeRemaining == "Time's up!" ? 0.3 : 0.8))
                             )
                         }
+                        .disabled(timeRemaining == "Time's up!")
                         
                         Button(action: {
                             withAnimation(.spring(response: 0.5)) { onTaken() }

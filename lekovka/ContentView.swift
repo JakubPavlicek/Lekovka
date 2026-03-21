@@ -86,6 +86,9 @@ struct ContentView: View {
                 // Clear the little red '1' badge on the home screen icon
                 UNUserNotificationCenter.current().setBadgeCount(0) { _ in }
                 UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+                
+                // Automatically check if we rolled over midnight!
+                reminderManager.checkAndResetForNewDay()
             }
         }
         // Listen for BLE pill confirmation → auto-mark pills taken
