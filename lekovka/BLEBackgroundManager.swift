@@ -308,7 +308,7 @@ class BLEBackgroundManager: NSObject, ObservableObject, CBCentralManagerDelegate
     
     // MARK: - NTC Auto-Handshake
     func postNtcTime() {
-        let timestamp = Int(Date().timeIntervalSince1970)
+        let timestamp = TimeZone.current.secondsFromGMT() + Int(Date().timeIntervalSince1970)
         let payload: [String: Any] = [
             "action": "post-ntc-time",
             "current_timestamp": timestamp
