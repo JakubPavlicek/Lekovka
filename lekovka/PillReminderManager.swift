@@ -64,7 +64,9 @@ class PillReminderManager: ObservableObject {
     private var eveningTimer: Timer?
     private var morningTargetDate: Date?
     private var eveningTargetDate: Date?
-    private let reminderIntervalSeconds: TimeInterval = 300 // 5 minutes
+    
+    /// How many minutes between repeat reminders.
+    private let reminderIntervalMinutes: Int = 1
     
     init() {
         if let mID = UserDefaults.standard.object(forKey: "lekovka_morning_schedule_id") as? Int {
@@ -146,12 +148,13 @@ class PillReminderManager: ObservableObject {
             identifier: "morning_reminder_main"
         )
         
+        let intervalSeconds = TimeInterval(reminderIntervalMinutes * 60)
         for i in 1...10 {
-            let reminderDate = date.addingTimeInterval(reminderIntervalSeconds * Double(i))
+            let reminderDate = date.addingTimeInterval(intervalSeconds * Double(i))
             scheduleNotification(
                 at: reminderDate,
                 title: "⏰ Morning Reminder #\(i)",
-                body: "You still haven't taken your morning pills! It's been \(i * 5) minutes.",
+                body: "You still haven't taken your morning pills! It's been \(i * reminderIntervalMinutes) minutes.",
                 identifier: "morning_reminder_followup_\(i)"
             )
         }
@@ -187,12 +190,13 @@ class PillReminderManager: ObservableObject {
             identifier: "evening_reminder_main"
         )
         
+        let intervalSeconds = TimeInterval(reminderIntervalMinutes * 60)
         for i in 1...10 {
-            let reminderDate = date.addingTimeInterval(reminderIntervalSeconds * Double(i))
+            let reminderDate = date.addingTimeInterval(intervalSeconds * Double(i))
             scheduleNotification(
                 at: reminderDate,
                 title: "⏰ Evening Reminder #\(i)",
-                body: "You still haven't taken your evening pills! It's been \(i * 5) minutes.",
+                body: "You still haven't taken your evening pills! It's been \(i * reminderIntervalMinutes) minutes.",
                 identifier: "evening_reminder_followup_\(i)"
             )
         }
@@ -271,11 +275,11 @@ class PillReminderManager: ObservableObject {
             "action": "post-configuration-schedule",
             "body": [
                 "morning": [
-                    "interval_alert_trigger_minutes": Int(reminderIntervalSeconds / 60),
+                    "interval_alert_trigger_minutes": reminderIntervalMinutes,
                     "alert": formattedMorningTime()
                 ],
                 "evening": [
-                    "interval_alert_trigger_minutes": Int(reminderIntervalSeconds / 60),
+                    "interval_alert_trigger_minutes": reminderIntervalMinutes,
                     "alert": formattedEveningTime()
                 ]
             ]
