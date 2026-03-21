@@ -41,4 +41,4 @@ SwiftUI application for pill reminder with ESP32 integration.
         }
         ```
     
-3. Email/Contact form - form with emails that will be send via API (the emails will receive an email upon the person not taking the pills X times - meaning the notifications on the phone will cross the X notification count threshold)
+3. Email/Contact form - pretty form for emails that will be send via REST API /caregivers that takes { "emails": ["string"] } as a request body and X-User-Id header (on the backend, the emails will receive an email when the person forgets to take the pills X times - meaning the notifications on the phone will cross the X notification count threshold)

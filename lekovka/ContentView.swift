@@ -69,10 +69,10 @@ struct ContentView: View {
                 }
                 .tag(2)
             
-            NotificationsView()
+            CaregiversView()
                 .tabItem {
-                    Image(systemName: "bell.badge.fill")
-                    Text("Feed")
+                    Image(systemName: "person.2.fill")
+                    Text("Caregivers")
                 }
                 .tag(3)
         }
