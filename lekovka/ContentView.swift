@@ -91,6 +91,10 @@ struct ContentView: View {
                 reminderManager.checkAndResetForNewDay()
             }
         }
+        // Also check if we roll over midnight while the app is active and on screen
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)) { _ in
+            reminderManager.checkAndResetForNewDay()
+        }
         // Listen for BLE pill confirmation → auto-mark pills taken
         .onChange(of: bleManager.lastReceivedString) { newValue in
             let lower = newValue.lowercased()

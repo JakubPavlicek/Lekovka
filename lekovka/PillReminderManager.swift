@@ -331,6 +331,7 @@ class PillReminderManager: ObservableObject {
         morningTimer?.invalidate()
         morningTimer = nil
         cancelReminders(prefix: "morning") // Clear any remaining alarms for today
+        scheduleNextDayReminders(for: .morning)
     }
     
     func markEveningPillsTaken() {
@@ -339,6 +340,73 @@ class PillReminderManager: ObservableObject {
         eveningTimer?.invalidate()
         eveningTimer = nil
         cancelReminders(prefix: "evening") // Clear any remaining alarms for today
+        scheduleNextDayReminders(for: .evening)
+    }
+
+    /// Automatically schedule alarms for tomorrow after the user has taken today's pill
+    private func scheduleNextDayReminders(for slot: TimerSlot) {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .day], from: Date())
+        
+        switch slot {
+        case .morning:
+            guard isMorningActive else { return }
+            components.hour = morningHour
+            components.minute = morningMinute
+            components.second = 0
+            
+            guard var date = calendar.date(from: components) else { return }
+            if date <= Date() {
+                date = calendar.date(byAdding: .day, value: 1, to: date) ?? date
+            }
+            
+            scheduleNotification(
+                at: date,
+                title: "🌅 Morning pills!",
+                body: "It's \(formattedMorningTime()) — time for your morning medication.",
+                identifier: "morning_reminder_main"
+            )
+            
+            let intervalSeconds = TimeInterval(reminderIntervalMinutes * 60)
+            for i in 1...10 {
+                let reminderDate = date.addingTimeInterval(intervalSeconds * Double(i))
+                scheduleNotification(
+                    at: reminderDate,
+                    title: "⏰ Morning Reminder #\(i)",
+                    body: "You still haven't taken your morning pills! It's been \(i * reminderIntervalMinutes) minutes.",
+                    identifier: "morning_reminder_followup_\(i)"
+                )
+            }
+            
+        case .evening:
+            guard isEveningActive else { return }
+            components.hour = eveningHour
+            components.minute = eveningMinute
+            components.second = 0
+            
+            guard var date = calendar.date(from: components) else { return }
+            if date <= Date() {
+                date = calendar.date(byAdding: .day, value: 1, to: date) ?? date
+            }
+            
+            scheduleNotification(
+                at: date,
+                title: "🌙 Evening pills!",
+                body: "It's \(formattedEveningTime()) — time for your evening medication.",
+                identifier: "evening_reminder_main"
+            )
+            
+            let intervalSeconds = TimeInterval(reminderIntervalMinutes * 60)
+            for i in 1...10 {
+                let reminderDate = date.addingTimeInterval(intervalSeconds * Double(i))
+                scheduleNotification(
+                    at: reminderDate,
+                    title: "⏰ Evening Reminder #\(i)",
+                    body: "You still haven't taken your evening pills! It's been \(i * reminderIntervalMinutes) minutes.",
+                    identifier: "evening_reminder_followup_\(i)"
+                )
+            }
+        }
     }
     
     /// Figures out which pill timer is the closest chronologically and marks it as taken
