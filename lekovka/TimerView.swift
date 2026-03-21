@@ -88,11 +88,6 @@ struct TimerView: View {
                     if let msg = saveConfirmation {
                         confirmationBanner(message: msg)
                     }
-                    
-                    // MARK: - Reset (if both taken)
-                    if reminderManager.allPillsTaken {
-                        resetButton
-                    }
                 }
                 .padding(.horizontal, 12)
                 .padding(.top, 12)
@@ -385,28 +380,6 @@ struct TimerView: View {
                 )
         )
         .transition(.opacity.combined(with: .move(edge: .bottom)))
-    }
-    
-    // MARK: - Reset Button
-    private var resetButton: some View {
-        Button(action: {
-            withAnimation(.spring(response: 0.5)) {
-                reminderManager.resetForNewDay()
-            }
-        }) {
-            HStack(spacing: 8) {
-                Image(systemName: "arrow.counterclockwise")
-                Text("Reset for Tomorrow")
-            }
-            .font(.system(size: 16, weight: .semibold, design: .rounded))
-            .foregroundColor(Color(hex: "667eea"))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .background(
-                RoundedRectangle(cornerRadius: 14)
-                    .fill(Color(hex: "667eea").opacity(0.12))
-            )
-        }
     }
     
     // MARK: - Info Card
