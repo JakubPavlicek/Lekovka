@@ -105,14 +105,21 @@ class AuthManager: ObservableObject {
                         // Parse user ID
                         if let id = json["id"] {
                             let userIdString = "\(id)"
+                            print("✅ Successfully got ID: \(userIdString) from 201/200 response")
                             self.persistLogin(userId: userIdString, email: email)
                         } else {
+                            let raw = String(data: data, encoding: .utf8) ?? ""
+                            print("❌ Missing 'id' in response. Raw data: \(raw)")
                             self.errorMessage = "Could not parse user ID from response"
                         }
                     } else {
+                        let raw = String(data: data, encoding: .utf8) ?? ""
+                        print("❌ Did not parse as [String: Any]. Raw data: \(raw)")
                         self.errorMessage = "Could not parse JSON response"
                     }
                 } catch {
+                    let raw = String(data: data, encoding: .utf8) ?? ""
+                    print("❌ JSON parse exception: \(error). Raw data: \(raw)")
                     self.errorMessage = "Response parse error: \(error.localizedDescription)"
                 }
             }
