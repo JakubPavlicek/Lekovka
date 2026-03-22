@@ -1,16 +1,30 @@
 import SwiftUI
 
+struct Caregiver: Codable, Identifiable {
+    var id = UUID()
+    var email: String
+    var phone: String
+    
+    enum CodingKeys: String, CodingKey {
+        case email, phone
+    }
+}
+
 // MARK: - Caregivers View
-/// Email/Contact form for adding caregiver emails.
-/// Sends POST /caregivers with { "emails": ["..."] } to notify
-/// caregivers when the user misses their pills too many times.
 struct CaregiversView: View {
     
     // MARK: - State
-    @State private var emails: [String] = [""]
+    @State private var caregivers: [Caregiver] = [Caregiver(email: "", phone: "")]
     @State private var isSubmitting: Bool = false
     @State private var submitResult: SubmitResult?
-    @FocusState private var focusedFieldIndex: Int?
+    
+    // Phone Verification state
+    @State private var verifyPhone: String = ""
+    @State private var verifyOTP: String = ""
+    @State private var isVerifying: Bool = false
+    @State private var verifyResult: SubmitResult?
+    
+    @FocusState private var focusedFieldIndex: String?
     @State private var showInfo: Bool = false
     
     enum SubmitResult: Equatable {
@@ -18,7 +32,6 @@ struct CaregiversView: View {
         case error(String)
     }
     
-    // Gradient matching the app's warm accent
     private let accentGradient = LinearGradient(
         colors: [Color(hex: "f7971e"), Color(hex: "ffd200")],
         startPoint: .topLeading,
@@ -31,15 +44,17 @@ struct CaregiversView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
-                    
                     // MARK: - Header
                     headerSection
                     
-                    // MARK: - Email List
-                    emailListCard
+                    // MARK: - Phone Verification
+                    phoneVerificationCard
+                    
+                    // MARK: - Caregiver List
+                    caregiverListCard
                     
                     // MARK: - Add Button
-                    addEmailButton
+                    addCaregiverButton
                     
                     // MARK: - Submit Button
                     submitButton
@@ -57,6 +72,9 @@ struct CaregiversView: View {
             .navigationTitle("Caregivers")
             .navigationBarTitleDisplayMode(.large)
             .toolbarColorScheme(.dark, for: .navigationBar)
+            .onAppear {
+                fetchCaregivers()
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showInfo = true }) {
@@ -91,346 +109,227 @@ struct CaregiversView: View {
     private var headerSection: some View {
         HStack(spacing: 16) {
             ZStack {
-                // Glow rings
-                Circle()
-                    .fill(Color(hex: "ffd200").opacity(0.06))
-                    .frame(width: 60, height: 60)
-                
-                Circle()
-                    .fill(accentGradient)
-                    .frame(width: 44, height: 44)
+                Circle().fill(Color(hex: "ffd200").opacity(0.06)).frame(width: 60, height: 60)
+                Circle().fill(accentGradient).frame(width: 44, height: 44)
                     .shadow(color: Color(hex: "ffd200").opacity(0.35), radius: 8, x: 0, y: 4)
-                
-                Image(systemName: "person.2.badge.gearshape.fill")
-                    .font(.system(size: 22))
-                    .foregroundColor(.white)
+                Image(systemName: "person.2.badge.gearshape.fill").font(.system(size: 22)).foregroundColor(.white)
             }
-            
             VStack(alignment: .leading, spacing: 4) {
-                Text("Caregiver Contacts")
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
-                
-                Text("Add emails of people who should be\nnotified when you miss your medication")
-                    .font(.system(size: 13, design: .rounded))
-                    .foregroundColor(Color.white.opacity(0.5))
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
+                Text("Caregiver Contacts").font(.system(size: 20, weight: .bold, design: .rounded)).foregroundColor(.white)
+                Text("Manage contacts and verify your phone").font(.system(size: 13, design: .rounded)).foregroundColor(Color.white.opacity(0.5))
             }
-            
             Spacer()
         }
-        .padding(20)
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(cardColor)
-                .shadow(color: Color.black.opacity(0.2), radius: 12, x: 0, y: 6)
-        )
+        .padding(20).frame(maxWidth: .infinity).background(RoundedRectangle(cornerRadius: 20).fill(cardColor))
     }
     
-    // MARK: - Email List Card
-    private var emailListCard: some View {
+    // MARK: - Phone Verification Card
+    private var phoneVerificationCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
-                Image(systemName: "envelope.badge.fill")
-                    .foregroundColor(Color(hex: "ffd200"))
-                Text("Email Addresses")
-                    .font(.system(size: 16, weight: .semibold, design: .rounded))
-                    .foregroundColor(.white)
+                Image(systemName: "iphone.badge.play").foregroundColor(Color(hex: "ffd200"))
+                Text("Phone Verification").font(.system(size: 16, weight: .semibold, design: .rounded)).foregroundColor(.white)
+            }
+            
+            VStack(spacing: 12) {
+                TextField("", text: $verifyPhone, prompt: Text("Phone Number (+420...)").foregroundColor(Color.white.opacity(0.5)))
+                    .textFieldStyle(CustomTextFieldStyle())
+                    .keyboardType(.phonePad)
                 
-                Spacer()
+                TextField("", text: $verifyOTP, prompt: Text("Verification OTP Code").foregroundColor(Color.white.opacity(0.5)))
+                    .textFieldStyle(CustomTextFieldStyle())
+                    .keyboardType(.numberPad)
                 
-                Text("\(validEmailCount)/\(emails.count)")
-                    .font(.system(size: 13, weight: .medium, design: .monospaced))
-                    .foregroundColor(Color(hex: "ffd200").opacity(0.7))
-            }
-            
-            ForEach(Array(emails.enumerated()), id: \.offset) { index, _ in
-                emailRow(index: index)
-            }
-        }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(cardColor)
-                .shadow(color: Color.black.opacity(0.2), radius: 12, x: 0, y: 6)
-        )
-    }
-    
-    // MARK: - Single Email Row
-    private func emailRow(index: Int) -> some View {
-        HStack(spacing: 10) {
-            // Row number badge
-            ZStack {
-                Circle()
-                    .fill(Color(hex: "ffd200").opacity(0.15))
-                    .frame(width: 30, height: 30)
-                Text("\(index + 1)")
-                    .font(.system(size: 13, weight: .bold, design: .rounded))
-                    .foregroundColor(Color(hex: "ffd200"))
-            }
-            
-            // Email input
-            TextField("", text: $emails[index], prompt: Text("caregiver@email.com")
-                .foregroundColor(Color.white.opacity(0.2)))
-                .font(.system(size: 15, design: .rounded))
-                .foregroundColor(.white)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .focused($focusedFieldIndex, equals: index)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 12)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(hex: "0f0f1a"))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(
-                                    focusedFieldIndex == index
-                                        ? Color(hex: "ffd200").opacity(0.5)
-                                        : Color.white.opacity(0.06),
-                                    lineWidth: 1
-                                )
-                        )
-                )
-            
-            // Delete button (only if more than one row)
-            if emails.count > 1 {
-                Button(action: {
-                    withAnimation(.spring(response: 0.35)) {
-                        removeEmail(at: index)
+                Button(action: { verifyPhoneOTP() }) {
+                    if isVerifying {
+                        ProgressView().progressViewStyle(CircularProgressViewStyle(tint: .white)).scaleEffect(0.8)
+                    } else {
+                        Text("Verify Phone")
+                            .font(.system(size: 15, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
                     }
-                }) {
-                    Image(systemName: "minus.circle.fill")
-                        .font(.system(size: 22))
-                        .foregroundColor(Color(hex: "f5576c").opacity(0.8))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(accentGradient.opacity(verifyPhone.isEmpty || verifyOTP.isEmpty ? 0.3 : 1.0))
+                .cornerRadius(12)
+                .disabled(isVerifying || verifyPhone.isEmpty || verifyOTP.isEmpty)
+            }
+            
+            if let result = verifyResult {
+                Text(result == .success ? "Phone verified successfully!" : "Verification failed")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(result == .success ? Color(hex: "38ef7d") : Color(hex: "f5576c"))
+            }
+        }
+        .padding(20).background(RoundedRectangle(cornerRadius: 20).fill(cardColor))
+    }
+    
+    // MARK: - Caregiver List Card
+    private var caregiverListCard: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 8) {
+                Image(systemName: "envelope.badge.fill").foregroundColor(Color(hex: "ffd200"))
+                Text("Caregiver List").font(.system(size: 16, weight: .semibold, design: .rounded)).foregroundColor(.white)
+                Spacer()
+            }
+            
+            ForEach(caregivers.indices, id: \.self) { index in
+                caregiverRow(index: index)
+            }
+        }
+        .padding(20).background(RoundedRectangle(cornerRadius: 20).fill(cardColor))
+    }
+    
+    // MARK: - Single Caregiver Row
+    private func caregiverRow(index: Int) -> some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 10) {
+                Circle().fill(Color(hex: "ffd200").opacity(0.15)).frame(width: 24, height: 24)
+                    .overlay(Text("\(index + 1)").font(.system(size: 11, weight: .bold)).foregroundColor(Color(hex: "ffd200")))
+                
+                TextField("", text: $caregivers[index].email, prompt: Text("Email (Required)").foregroundColor(Color.white.opacity(0.5)))
+                    .textFieldStyle(CustomTextFieldStyle())
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                
+                if caregivers.count > 1 {
+                    Button(action: { caregivers.remove(at: index) }) {
+                        Image(systemName: "minus.circle.fill").foregroundColor(Color(hex: "f5576c").opacity(0.8))
+                    }
                 }
             }
+            
+            TextField("", text: $caregivers[index].phone, prompt: Text("Phone (Optional)").foregroundColor(Color.white.opacity(0.5)))
+                .textFieldStyle(CustomTextFieldStyle())
+                .keyboardType(.phonePad)
+                .padding(.leading, 34)
+            
+            Divider().background(Color.white.opacity(0.05)).padding(.top, 4)
         }
     }
     
-    // MARK: - Add Email Button
-    private var addEmailButton: some View {
-        Button(action: {
-            withAnimation(.spring(response: 0.35)) {
-                emails.append("")
-                // Focus the new field after a short delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    focusedFieldIndex = emails.count - 1
-                }
-            }
-        }) {
-            HStack(spacing: 8) {
-                Image(systemName: "plus.circle.fill")
-                    .font(.system(size: 18))
-                Text("Add Another Email")
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
-            }
-            .foregroundColor(Color(hex: "ffd200"))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .background(
-                RoundedRectangle(cornerRadius: 14)
-                    .fill(Color(hex: "ffd200").opacity(0.1))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 14)
-                            .stroke(Color(hex: "ffd200").opacity(0.2), lineWidth: 1)
-                    )
-            )
+    // MARK: - Add Button
+    private var addCaregiverButton: some View {
+        Button(action: { caregivers.append(Caregiver(email: "", phone: "")) }) {
+            Label("Add Another Caregiver", systemImage: "plus.circle.fill")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(Color(hex: "ffd200"))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(RoundedRectangle(cornerRadius: 14).fill(Color(hex: "ffd200").opacity(0.1)))
         }
     }
     
     // MARK: - Submit Button
     private var submitButton: some View {
-        Button(action: { submitEmails() }) {
+        Button(action: { submitCaregivers() }) {
             HStack(spacing: 10) {
-                if isSubmitting {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .scaleEffect(0.9)
-                } else {
-                    Image(systemName: "paperplane.fill")
-                        .font(.system(size: 18))
-                }
-                Text(isSubmitting ? "Saving..." : "Save Caregivers")
-                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                if isSubmitting { ProgressView().progressViewStyle(CircularProgressViewStyle(tint: .white)) }
+                else { Image(systemName: "paperplane.fill") }
+                Text(isSubmitting ? "Saving..." : "Save Caregivers").font(.system(size: 17, weight: .bold))
             }
-            .foregroundColor(validEmailCount > 0 ? .white : Color.white.opacity(0.5))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 17)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(
-                        validEmailCount > 0
-                            ? accentGradient
-                            : LinearGradient(colors: [Color.gray.opacity(0.3), Color.gray.opacity(0.2)], startPoint: .leading, endPoint: .trailing)
-                    )
-                    .shadow(
-                        color: validEmailCount > 0 ? Color(hex: "ffd200").opacity(0.3) : .clear,
-                        radius: 12, x: 0, y: 6
-                    )
-            )
+            .foregroundColor(.white).frame(maxWidth: .infinity).padding(.vertical, 17)
+            .background(RoundedRectangle(cornerRadius: 16).fill(accentGradient))
         }
-        .disabled(isSubmitting || validEmailCount == 0)
+        .disabled(isSubmitting)
     }
     
     // MARK: - Result Banner
     private func resultBanner(result: SubmitResult) -> some View {
         HStack(spacing: 12) {
             Image(systemName: result == .success ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
-                .font(.system(size: 22))
-            
-            Text(result == .success
-                 ? "Caregivers saved successfully!"
-                 : { if case .error(let msg) = result { return msg } else { return "" } }())
-                .font(.system(size: 14, weight: .medium, design: .rounded))
-            
-            Spacer()
+            Text(result == .success ? "Saved successfully!" : "Error occurred")
         }
         .foregroundColor(result == .success ? Color(hex: "38ef7d") : Color(hex: "f5576c"))
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(
-                    (result == .success ? Color(hex: "38ef7d") : Color(hex: "f5576c"))
-                        .opacity(0.1)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14)
-                        .stroke(
-                            (result == .success ? Color(hex: "38ef7d") : Color(hex: "f5576c"))
-                                .opacity(0.2),
-                            lineWidth: 1
-                        )
-                )
-        )
-        .transition(.opacity.combined(with: .move(edge: .bottom)))
+        .padding(16).background(RoundedRectangle(cornerRadius: 14).fill(Color.white.opacity(0.05)))
     }
     
-    // MARK: - Info Card
-    private var infoCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                Image(systemName: "info.circle.fill")
-                    .foregroundColor(Color(hex: "ffd200").opacity(0.7))
-                Text("How it works")
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
-                    .foregroundColor(.white)
-            }
-            
-            VStack(alignment: .leading, spacing: 8) {
-                infoRow(icon: "1.circle.fill", text: "Add your caregiver email addresses")
-                infoRow(icon: "2.circle.fill", text: "They'll be notified if you miss your pills")
-                infoRow(icon: "3.circle.fill", text: "Alerts are sent after repeated missed doses")
-            }
-        }
-        .padding(20)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(cardColor.opacity(0.6))
-        )
-    }
-    
-    private func infoRow(icon: String, text: String) -> some View {
-        HStack(spacing: 10) {
-            Image(systemName: icon)
-                .font(.system(size: 14))
-                .foregroundColor(Color(hex: "ffd200").opacity(0.6))
-            Text(text)
-                .font(.system(size: 14, design: .rounded))
-                .foregroundColor(Color.white.opacity(0.5))
-        }
-    }
-    
-    // MARK: - Helpers
-    
-    private var validEmailCount: Int {
-        emails.filter { isValidEmail($0) }.count
-    }
-    
-    private func isValidEmail(_ email: String) -> Bool {
-        let trimmed = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return false }
-        // Simple email validation
-        let pattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        return trimmed.range(of: pattern, options: .regularExpression) != nil
-    }
-    
-    private func removeEmail(at index: Int) {
-        guard emails.count > 1 else { return }
-        emails.remove(at: index)
-    }
-    
-    // MARK: - API Call
-    private func submitEmails() {
-        let validEmails = emails
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { isValidEmail($0) }
-        
-        guard !validEmails.isEmpty else { return }
-        
-        isSubmitting = true
-        submitResult = nil
-        
+    // MARK: - API Calls
+    private func fetchCaregivers() {
         let baseURL = AuthManager.apiBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
-        guard let url = URL(string: "\(baseURL)/caregivers") else {
-            isSubmitting = false
-            submitResult = .error("Invalid API URL")
-            return
-        }
+        guard let url = URL(string: "\(baseURL)/caregivers") else { return }
+        var request = URLRequest(url: url)
+        if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") { request.setValue(userId, forHTTPHeaderField: "X-User-ID") }
+        
+        URLSession.shared.dataTask(with: request) { data, _, _ in
+            if let data = data, let decoded = try? JSONDecoder().decode([Caregiver].self, from: data) {
+                DispatchQueue.main.async {
+                    self.caregivers = decoded.isEmpty ? [Caregiver(email: "", phone: "")] : decoded
+                }
+            }
+        }.resume()
+    }
+    
+    private func submitCaregivers() {
+        let validOnes = caregivers.filter { !$0.email.isEmpty }
+        isSubmitting = true
+        let baseURL = AuthManager.apiBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard let url = URL(string: "\(baseURL)/caregivers") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") { request.setValue(userId, forHTTPHeaderField: "X-User-ID") }
+        
+        let body: [String: [Caregiver]] = ["caregivers": validOnes]
+        request.httpBody = try? JSONEncoder().encode(body)
+        
+        URLSession.shared.dataTask(with: request) { _, response, _ in
+            DispatchQueue.main.async {
+                self.isSubmitting = false
+                if let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) {
+                    self.submitResult = .success
+                } else {
+                    self.submitResult = .error("Failed")
+                }
+            }
+        }.resume()
+    }
+    
+    private func verifyPhoneOTP() {
+        isVerifying = true
+        let baseURL = AuthManager.apiBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard let url = URL(string: "\(baseURL)/caregivers/verify-phone") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") { request.setValue(userId, forHTTPHeaderField: "X-User-ID") }
         
-        // Auth header with persisted user ID
-        if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") {
-            request.setValue(userId, forHTTPHeaderField: "X-User-ID")
-        }
-        
-        let body: [String: [String]] = ["emails": validEmails]
+        let body: [String: String] = ["phone": verifyPhone, "otp": verifyOTP]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
-        URLSession.shared.dataTask(with: request) { _, response, error in
+        URLSession.shared.dataTask(with: request) { _, response, _ in
             DispatchQueue.main.async {
-                isSubmitting = false
-                
-                if let error = error {
-                    withAnimation(.spring(response: 0.4)) {
-                        submitResult = .error("Connection error: \(error.localizedDescription)")
-                    }
-                    return
-                }
-                
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    withAnimation(.spring(response: 0.4)) {
-                        submitResult = .error("Invalid server response")
-                    }
-                    return
-                }
-                
-                if (200...299).contains(httpResponse.statusCode) {
-                    withAnimation(.spring(response: 0.4)) {
-                        submitResult = .success
-                    }
-                    
-                    // Hide the success message after a short delay
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                        if self.submitResult == .success {
-                            withAnimation(.spring(response: 0.4)) {
-                                self.submitResult = nil
-                            }
-                        }
-                    }
+                self.isVerifying = false
+                if let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) {
+                    self.verifyResult = .success
                 } else {
-                    withAnimation(.spring(response: 0.4)) {
-                        submitResult = .error("Server error (HTTP \(httpResponse.statusCode))")
-                    }
+                    self.verifyResult = .error("Failed")
                 }
             }
         }.resume()
+    }
+    
+    private var infoCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label("How it works", systemImage: "info.circle.fill").foregroundColor(.white)
+            Text("Add caregivers and verify your phone to ensure you're always connected.").font(.system(size: 14)).foregroundColor(.white.opacity(0.6))
+        }
+        .padding(20).background(RoundedRectangle(cornerRadius: 20).fill(cardColor.opacity(0.6)))
+    }
+}
+
+// Custom TextField style for a consistent sleek look
+struct CustomTextFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .font(.system(size: 15, design: .rounded))
+            .foregroundColor(.white)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .background(RoundedRectangle(cornerRadius: 12).fill(Color(hex: "0f0f1a")))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.white.opacity(0.06), lineWidth: 1))
     }
 }

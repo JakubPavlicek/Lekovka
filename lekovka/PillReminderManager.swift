@@ -488,19 +488,16 @@ class PillReminderManager: ObservableObject {
     // MARK: - Schedule Configuration JSON (for ESP32)
     /// Builds the post-configuration-schedule JSON to send to ESP32.
     func buildConfigurationScheduleJSON() -> String? {
-        let mAlert = morningTargetDate?.timeIntervalSince1970 ?? Date().timeIntervalSince1970
-        let eAlert = eveningTargetDate?.timeIntervalSince1970 ?? Date().timeIntervalSince1970
-        
         let payload: [String: Any] = [
             "action": "post-configuration-schedule",
             "body": [
                 "morning": [
                     "interval_alert_trigger_minutes": reminderIntervalMinutes,
-                    "alert": Int(mAlert)
+                    "alert": formattedMorningTime()
                 ],
                 "evening": [
                     "interval_alert_trigger_minutes": reminderIntervalMinutes,
-                    "alert": Int(eAlert)
+                    "alert": formattedEveningTime()
                 ]
             ]
         ]
