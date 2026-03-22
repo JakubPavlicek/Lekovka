@@ -1,190 +1,587 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "" : {
-
-    },
-    "%@ Pills" : {
-
-    },
-    "%lld" : {
-
-    },
-    "%lld Minute(s)" : {
-
-    },
-    "%lld Missed" : {
-
-    },
-    "Active" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktivní"
+  "sourceLanguage": "en",
+  "strings": {
+    "": {},
+    "%@ Pills": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Pilulky"
           }
         }
       }
     },
-    "Add Another Caregiver" : {
-
+    "%lld": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        }
+      }
     },
-    "Add caregivers and verify your phone to ensure you're always connected." : {
-
+    "%lld Minute(s)": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Minut(y)"
+          }
+        }
+      }
     },
-    "App Preferences" : {
-
+    "%lld Missed": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Zmeškáno"
+          }
+        }
+      }
     },
-    "BLE" : {
-
+    "Active": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivní"
+          }
+        }
+      }
     },
-    "Cancel" : {
-
+    "Add Another Caregiver": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přidat dalšího pečovatele"
+          }
+        }
+      }
     },
-    "Cancel %@ Timer?" : {
-
+    "Add caregivers and verify your phone to ensure you're always connected.": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přidejte pečovatele a ověřte své telefonní číslo, abyste byli vždy ve spojení."
+          }
+        }
+      }
     },
-    "Caregiver Alert Threshold" : {
-
+    "App Preferences": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavení aplikace"
+          }
+        }
+      }
     },
-    "Caregiver Contacts" : {
-
+    "BLE": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BLE"
+          }
+        }
+      }
     },
-    "Caregiver List" : {
-
+    "Cancel": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zrušit"
+          }
+        }
+      }
     },
-    "Caregivers" : {
-
+    "Cancel %@ Timer?": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zrušit %@ časovač?"
+          }
+        }
+      }
     },
-    "Confirm" : {
-
+    "Caregiver Alert Threshold": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prahová hodnota upozornění pečovatele"
+          }
+        }
+      }
     },
-    "Continue" : {
-
+    "Caregiver Contacts": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontakty na pečovatele"
+          }
+        }
+      }
     },
-    "Customize your pill reminders\nand caregiver notifications." : {
-
+    "Caregiver List": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seznam pečovatelů"
+          }
+        }
+      }
     },
-    "Done" : {
-
+    "Caregivers": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pečovatelé"
+          }
+        }
+      }
     },
-    "Email (Required)" : {
-
+    "Confirm": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Potvrdit"
+          }
+        }
+      }
     },
-    "Enter your email to sign in" : {
-
+    "Continue": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pokračovat"
+          }
+        }
+      }
     },
-    "Error occurred" : {
-
+    "Customize your pill reminders\n and caregiver notifications.": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přizpůsobte si připomenutí léků\n a upozornění pečovatelů."
+          }
+        }
+      }
     },
-    "ESP32 BLE" : {
-
+    "Done": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hotovo"
+          }
+        }
+      }
     },
-    "Get Started" : {
-
+    "Email (Required)": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-mail (Povinné)"
+          }
+        }
+      }
     },
-    "How it works" : {
-
+    "Enter your email to sign in": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zadejte svůj e-mail pro přihlášení"
+          }
+        }
+      }
     },
-    "How many minutes between local notifications if you forget to take your pill." : {
-
+    "Error occurred": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Došlo k chybě"
+          }
+        }
+      }
     },
-    "How many missed reminders before an email is sent to your caregivers." : {
-
+    "ESP32 BLE": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ESP32 BLE"
+          }
+        }
+      }
     },
-    "Keep Timer" : {
-
+    "Get Started": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Začít"
+          }
+        }
+      }
     },
-    "Last Received Data" : {
-
+    "How it works": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jak to funguje"
+          }
+        }
+      }
     },
-    "Lékovka" : {
-
+    "How many minutes between local notifications if you forget to take your pill.": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kolik minut mezi lokálními upozorněními, pokud si zapomenete vzít lék."
+          }
+        }
+      }
     },
-    "Manage contacts and verify your phone" : {
-
+    "How many missed reminders before an email is sent to your caregivers.": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kolik zmeškaných upozornění, než bude odeslán e-mail vašim pečovatelům."
+          }
+        }
+      }
     },
-    "Phone (Optional)" : {
-
+    "Keep Timer": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponechat časovač"
+          }
+        }
+      }
     },
-    "Phone Number (+420...)" : {
-
+    "Last Received Data": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naposledy přijatá data"
+          }
+        }
+      }
     },
-    "Phone Verification" : {
-
+    "Lékovka": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lékovka"
+          }
+        }
+      }
     },
-    "Phone verified successfully!" : {
-
+    "Manage contacts and verify your phone": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Správa kontaktů a ověření telefonu"
+          }
+        }
+      }
     },
-    "Pill Timer" : {
-
+    "Phone (Optional)": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefon (Volitelné)"
+          }
+        }
+      }
     },
-    "Reminder Interval" : {
-
+    "Phone Number (+420...)": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonní číslo (+420...)"
+          }
+        }
+      }
     },
-    "Save & Sync Schedule" : {
-
+    "Phone Verification": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ověření telefonu"
+          }
+        }
+      }
     },
-    "Save Caregivers" : {
-
+    "Phone verified successfully!": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefon úspěšně ověřen!"
+          }
+        }
+      }
     },
-    "Save Preferences" : {
-
+    "Pill Timer": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Časovač léků"
+          }
+        }
+      }
     },
-    "Saved successfully!" : {
-
+    "Reminder Interval": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interval připomenutí"
+          }
+        }
+      }
     },
-    "Saving..." : {
-
+    "Save & Sync Schedule": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uložit a synchronizovat"
+          }
+        }
+      }
     },
-    "Scanning for ESP32..." : {
-
+    "Save Caregivers": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uložit pečovatele"
+          }
+        }
+      }
     },
-    "Scheduled for %@" : {
-
+    "Save Preferences": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uložit předvolby"
+          }
+        }
+      }
     },
-    "Set %@ time" : {
-
+    "Saved successfully!": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Úspěšně uloženo!"
+          }
+        }
+      }
     },
-    "Set your %@ time" : {
-
+    "Saving...": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ukládání..."
+          }
+        }
+      }
     },
-    "Settings" : {
-
+    "Scanning for ESP32...": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hledání ESP32..."
+          }
+        }
+      }
     },
-    "Signing in..." : {
-
+    "Scheduled for %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naplánováno na %@"
+          }
+        }
+      }
     },
-    "Taken at %@" : {
-
+    "Set %@ time": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavit %@ čas"
+          }
+        }
+      }
     },
-    "Taken!" : {
-
+    "Set your %@ time": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavte svůj %@ čas"
+          }
+        }
+      }
     },
-    "This will stop the reminders and delete the schedule from the server." : {
-
+    "Settings": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavení"
+          }
+        }
+      }
     },
-    "Timer" : {
-
+    "Signing in...": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přihlašování..."
+          }
+        }
+      }
     },
-    "Verification failed" : {
-
+    "Taken at %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vzato v %@"
+          }
+        }
+      }
     },
-    "Verification OTP Code" : {
-
+    "Taken!": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vzato!"
+          }
+        }
+      }
     },
-    "Verify Phone" : {
-
+    "This will stop the reminders and delete the schedule from the server.": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tímto se zastaví připomenutí a odstraní se plán ze serveru."
+          }
+        }
+      }
     },
-    "Yes, Cancel" : {
-
+    "Timer": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Časovač"
+          }
+        }
+      }
     },
-    "Your pill reminder companion" : {
-
+    "Verification failed": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ověření selhalo"
+          }
+        }
+      }
     },
-    "your@email.com" : {
-
+    "Verification OTP Code": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ověřovací OTP kód"
+          }
+        }
+      }
+    },
+    "Verify Phone": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ověřit telefon"
+          }
+        }
+      }
+    },
+    "Yes, Cancel": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ano, zrušit"
+          }
+        }
+      }
+    },
+    "Your pill reminder companion": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Váš společník pro připomenutí léků"
+          }
+        }
+      }
+    },
+    "your@email.com": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vas@email.cz"
+          }
+        }
+      }
     }
   },
-  "version" : "1.1"
+  "version": "1.1"
 }
