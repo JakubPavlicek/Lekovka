@@ -164,7 +164,7 @@ struct TimerView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(LocalizedStringKey("\(title) Pills"))
+                    Text(LocalizedStringKey(title + " Pills"))
                         .font(.system(size: 18, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
                     
@@ -181,7 +181,7 @@ struct TimerView: View {
                             .lineLimit(1)
                             .minimumScaleFactor(0.8)
                     } else {
-                        Text(LocalizedStringKey("Set your \(title.lowercased()) time"))
+                        Text(LocalizedStringKey("Set your " + title.lowercased() + " time"))
                             .font(.system(size: 12, design: .rounded))
                             .foregroundColor(Color.white.opacity(0.35))
                             .lineLimit(1)
@@ -295,7 +295,7 @@ struct TimerView: View {
                         )
                     
                     DatePicker(
-                        LocalizedStringKey("Set \(title) time"),
+                        LocalizedStringKey("Set " + title + " time"),
                         selection: timeBinding,
                         displayedComponents: .hourAndMinute
                     )
@@ -317,7 +317,7 @@ struct TimerView: View {
                 .fill(cardColor)
                 .shadow(color: Color.black.opacity(0.3), radius: 16, x: 0, y: 8)
         )
-        .alert(LocalizedStringKey("Cancel \(title) Timer?"), isPresented: showCancelAlert) {
+        .alert(LocalizedStringKey("Cancel " + title + " Timer?"), isPresented: showCancelAlert) {
             Button("Keep Timer", role: .cancel) { }
             Button("Yes, Cancel", role: .destructive) {
                 withAnimation(.spring(response: 0.4)) { onStop() }

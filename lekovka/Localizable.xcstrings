@@ -172,12 +172,12 @@
         }
       }
     },
-    "Customize your pill reminders\n and caregiver notifications.": {
+    "Customize your pill reminders and caregiver notifications.": {
       "localizations": {
         "cs": {
           "stringUnit": {
             "state": "translated",
-            "value": "Přizpůsobte si připomenutí léků\n a upozornění pečovatelů."
+            "value": "Přizpůsobte si připomenutí léků a upozornění pečovatelů."
           }
         }
       }
@@ -878,6 +878,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stav Bluetooth: %lld"
+          }
+        }
+      }
+    },
+    "Error: Not logged in.": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chyba: Nepřihlášen"
+          }
+        }
+      }
+    },
+    "Error: %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chyba: %@"
+          }
+        }
+      }
+    },
+    "Invalid server response.": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neplatná odpověď serveru."
+          }
+        }
+      }
+    },
+    "Settings saved successfully!": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavení úspěšně uloženo!"
+          }
+        }
+      }
+    },
+    "Server error (HTTP %lld)": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chyba serveru (HTTP %lld)"
           }
         }
       }

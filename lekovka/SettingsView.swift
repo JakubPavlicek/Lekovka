@@ -15,7 +15,7 @@ struct SettingsView: View {
     @State private var draftNotifyCaregivers: Int = 3
     
     @State private var isSaving: Bool = false
-    @State private var saveMessage: String? = nil
+    @State private var saveMessage: LocalizedStringKey? = nil
     @State private var isSuccess: Bool = false
     
     private let cardColor = Color(hex: "1a1a2e")
@@ -83,7 +83,7 @@ struct SettingsView: View {
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
                 
-                Text("Customize your pill reminders\nand caregiver notifications.")
+                Text("Customize your pill reminders and caregiver notifications.")
                     .font(.system(size: 13, design: .rounded))
                     .foregroundColor(Color.white.opacity(0.5))
                     .lineLimit(2)
@@ -201,7 +201,7 @@ struct SettingsView: View {
     }
     
     // MARK: - Message Banner
-    private func messageBanner(text: String, isSuccess: Bool) -> some View {
+    private func messageBanner(text: LocalizedStringKey, isSuccess: Bool) -> some View {
         HStack(spacing: 12) {
             Image(systemName: isSuccess ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
                 .font(.system(size: 20))
