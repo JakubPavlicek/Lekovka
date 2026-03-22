@@ -37,7 +37,7 @@
         "cs": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld Zmeškáno"
+            "value": "%lld Zmeškání"
           }
         }
       }
@@ -928,6 +928,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Chyba serveru (HTTP %lld)"
+          }
+        }
+      }
+    },
+    "Set your morning & evening pill times": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavte ranní a večerní časy léků"
+          }
+        }
+      }
+    },
+    "Tap Save to sync with ESP32 and server": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klepnutím na Uložit synchronizujte s ESP32 a serverem"
+          }
+        }
+      }
+    },
+    "Reminders repeat every %lld min until taken": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Připomínky se opakují každých %lld min, dokud není lék užit"
+          }
+        }
+      }
+    },
+    "Confirm via ESP32 or tap \"Taken!\" to stop": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Potvrďte pomocí ESP32 nebo klepněte na \"Vzato!\" k zastavení"
           }
         }
       }

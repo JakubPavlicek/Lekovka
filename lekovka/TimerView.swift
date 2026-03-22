@@ -408,7 +408,7 @@ struct TimerView: View {
         )
     }
     
-    private func infoRow(icon: String, text: String) -> some View {
+    private func infoRow(icon: String, text: LocalizedStringKey) -> some View {
         HStack(spacing: 10) {
             Image(systemName: icon)
                 .font(.system(size: 14))
