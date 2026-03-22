@@ -43,6 +43,12 @@ struct ContentView: View {
             }
         }
         .animation(.easeInOut(duration: 0.4), value: authManager.isLoggedIn)
+        .onAppear {
+            // Pre-warm the StateObjects when the app launches so their heavy 
+            // XPC initializers don't freeze the main thread during the login animation.
+            _ = bleManager
+            _ = reminderManager
+        }
     }
     
     // MARK: - Main Tab View
