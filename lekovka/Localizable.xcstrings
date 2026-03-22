@@ -1,0 +1,190 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@ Pills" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld Minute(s)" : {
+
+    },
+    "%lld Missed" : {
+
+    },
+    "Active" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivní"
+          }
+        }
+      }
+    },
+    "Add Another Caregiver" : {
+
+    },
+    "Add caregivers and verify your phone to ensure you're always connected." : {
+
+    },
+    "App Preferences" : {
+
+    },
+    "BLE" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Cancel %@ Timer?" : {
+
+    },
+    "Caregiver Alert Threshold" : {
+
+    },
+    "Caregiver Contacts" : {
+
+    },
+    "Caregiver List" : {
+
+    },
+    "Caregivers" : {
+
+    },
+    "Confirm" : {
+
+    },
+    "Continue" : {
+
+    },
+    "Customize your pill reminders\nand caregiver notifications." : {
+
+    },
+    "Done" : {
+
+    },
+    "Email (Required)" : {
+
+    },
+    "Enter your email to sign in" : {
+
+    },
+    "Error occurred" : {
+
+    },
+    "ESP32 BLE" : {
+
+    },
+    "Get Started" : {
+
+    },
+    "How it works" : {
+
+    },
+    "How many minutes between local notifications if you forget to take your pill." : {
+
+    },
+    "How many missed reminders before an email is sent to your caregivers." : {
+
+    },
+    "Keep Timer" : {
+
+    },
+    "Last Received Data" : {
+
+    },
+    "Lékovka" : {
+
+    },
+    "Manage contacts and verify your phone" : {
+
+    },
+    "Phone (Optional)" : {
+
+    },
+    "Phone Number (+420...)" : {
+
+    },
+    "Phone Verification" : {
+
+    },
+    "Phone verified successfully!" : {
+
+    },
+    "Pill Timer" : {
+
+    },
+    "Reminder Interval" : {
+
+    },
+    "Save & Sync Schedule" : {
+
+    },
+    "Save Caregivers" : {
+
+    },
+    "Save Preferences" : {
+
+    },
+    "Saved successfully!" : {
+
+    },
+    "Saving..." : {
+
+    },
+    "Scanning for ESP32..." : {
+
+    },
+    "Scheduled for %@" : {
+
+    },
+    "Set %@ time" : {
+
+    },
+    "Set your %@ time" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Signing in..." : {
+
+    },
+    "Taken at %@" : {
+
+    },
+    "Taken!" : {
+
+    },
+    "This will stop the reminders and delete the schedule from the server." : {
+
+    },
+    "Timer" : {
+
+    },
+    "Verification failed" : {
+
+    },
+    "Verification OTP Code" : {
+
+    },
+    "Verify Phone" : {
+
+    },
+    "Yes, Cancel" : {
+
+    },
+    "Your pill reminder companion" : {
+
+    },
+    "your@email.com" : {
+
+    }
+  },
+  "version" : "1.1"
+}
