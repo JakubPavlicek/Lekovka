@@ -151,7 +151,7 @@ struct BLEView: View {
             HStack(spacing: 10) {
                 Image(systemName: icon)
                     .font(.system(size: 20))
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(.system(size: 17, weight: .bold, design: .rounded))
             }
             .foregroundColor(.white)

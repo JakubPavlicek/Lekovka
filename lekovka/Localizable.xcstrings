@@ -572,6 +572,316 @@
         }
       }
     },
+    "Set your morning time": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavte si ranní čas"
+          }
+        }
+      }
+    },
+    "Set your evening time": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavte si večerní čas"
+          }
+        }
+      }
+    },
+    "Set Morning time": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavit ranní čas"
+          }
+        }
+      }
+    },
+    "Set Evening time": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavit večerní čas"
+          }
+        }
+      }
+    },
+    "Morning Pills": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ranní pilulky"
+          }
+        }
+      }
+    },
+    "Evening Pills": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Večerní pilulky"
+          }
+        }
+      }
+    },
+    "Cancel Morning Timer?": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zrušit ranní časovač?"
+          }
+        }
+      }
+    },
+    "Cancel Evening Timer?": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zrušit večerní časovač?"
+          }
+        }
+      }
+    },
+    "Stop Scanning": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zastavit skenování"
+          }
+        }
+      }
+    },
+    "Scan for ESP32": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hledat ESP32"
+          }
+        }
+      }
+    },
+    "Disconnect": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odpojit"
+          }
+        }
+      }
+    },
+    "Disconnected": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odpojeno"
+          }
+        }
+      }
+    },
+    "Bluetooth not ready": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth není připraveno"
+          }
+        }
+      }
+    },
+    "Scanning for ESP32_JSON_DEVICE...": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hledání ESP32_JSON_DEVICE..."
+          }
+        }
+      }
+    },
+    "Stopped scanning": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hledání zastaveno"
+          }
+        }
+      }
+    },
+    "Restored: %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obnoveno: %@"
+          }
+        }
+      }
+    },
+    "Bluetooth ready": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth připraveno"
+          }
+        }
+      }
+    },
+    "Bluetooth is off": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth je vypnuté"
+          }
+        }
+      }
+    },
+    "Bluetooth unauthorized": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth nepovoleno"
+          }
+        }
+      }
+    },
+    "Bluetooth not supported": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth nepodporováno"
+          }
+        }
+      }
+    },
+    "Found: %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nalezeno: %@"
+          }
+        }
+      }
+    },
+    "Connecting...": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Připojování..."
+          }
+        }
+      }
+    },
+    "Connected to %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Připojeno k %@"
+          }
+        }
+      }
+    },
+    "Failed to connect: %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nepodařilo se připojit: %@"
+          }
+        }
+      }
+    },
+    "Reconnecting...": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opětovné připojování..."
+          }
+        }
+      }
+    },
+    "Service discovery failed: %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nalezení služeb selhalo: %@"
+          }
+        }
+      }
+    },
+    "Characteristic discovery failed: %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nalezení charakteristik selhalo: %@"
+          }
+        }
+      }
+    },
+    "Notification setup failed: %@": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nastavení upozornění selhalo: %@"
+          }
+        }
+      }
+    },
+    "Listening for data...": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Čekání na data..."
+          }
+        }
+      }
+    },
+    "Not connected": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nepřipojeno"
+          }
+        }
+      }
+    },
+    "Bluetooth state: %lld": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stav Bluetooth: %lld"
+          }
+        }
+      }
+    },
     "your@email.com": {
       "localizations": {
         "cs": {

@@ -2,6 +2,7 @@ import Foundation
 import CoreBluetooth
 import UserNotifications
 import Combine
+import SwiftUI
 
 // MARK: - BLE Background Manager
 class BLEBackgroundManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
@@ -9,7 +10,7 @@ class BLEBackgroundManager: NSObject, ObservableObject, CBCentralManagerDelegate
     // MARK: - Published Properties
     @Published var receivedData: Data = Data()
     @Published var isConnected: Bool = false
-    @Published var connectionStatus: String = "Disconnected"
+    @Published var connectionStatus: LocalizedStringKey = "Disconnected"
     @Published var lastReceivedString: String = ""
     @Published var isScanning: Bool = false
     
