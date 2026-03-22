@@ -78,7 +78,7 @@ struct ContentView: View {
         }
         .tint(Color(hex: "667eea"))
         .onAppear {
-            reminderManager.requestNotificationPermission()
+            // reminderManager.requestNotificationPermission()
         }
         // Auto-clear notification badge when the app opens
         .onChange(of: scenePhase) { newPhase in
