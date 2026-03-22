@@ -409,23 +409,9 @@ class PillReminderManager: ObservableObject {
         }
     }
     
-    /// Figures out which pill timer is the closest chronologically and marks it as taken
+    /// Marks the morning pill as taken if it hasn't been yet; otherwise marks the evening pill as taken.
     func markClosestPillsTaken() {
-        let now = Date()
-        var morningDiff: TimeInterval = .infinity
-        var eveningDiff: TimeInterval = .infinity
-        
-        if isMorningActive, let target = morningTargetDate {
-            morningDiff = abs(target.timeIntervalSince(now))
-        }
-        if isEveningActive, let target = eveningTargetDate {
-            eveningDiff = abs(target.timeIntervalSince(now))
-        }
-        
-        if morningDiff == .infinity && eveningDiff == .infinity {
-            if !morningPillsTaken { markMorningPillsTaken() }
-            else { markEveningPillsTaken() }
-        } else if morningDiff < eveningDiff {
+        if !morningPillsTaken {
             markMorningPillsTaken()
         } else {
             markEveningPillsTaken()

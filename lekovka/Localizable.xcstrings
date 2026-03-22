@@ -1,987 +1,1004 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "": {},
-    "%@ Pills": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ Pilulky"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@ Pills" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Pilulky"
           }
         }
       }
     },
-    "%lld": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld"
+    "%lld" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
           }
         }
       }
     },
-    "%lld Minute(s)": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Minut(y)"
+    "%lld Minute(s)" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Minut(y)"
           }
         }
       }
     },
-    "%lld Missed": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Zmeškání"
+    "%lld Missed" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Zmeškání"
           }
         }
       }
     },
-    "Active": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aktivní"
+    "Active" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivní"
           }
         }
       }
     },
-    "Add Another Caregiver": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Přidat dalšího pečovatele"
+    "Add Another Caregiver" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidat dalšího pečovatele"
           }
         }
       }
     },
-    "Add caregivers and verify your phone to ensure you're always connected.": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Přidejte pečovatele a ověřte své telefonní číslo, abyste byli vždy ve spojení."
+    "Add caregivers and verify your phone to ensure you're always connected." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidejte pečovatele a ověřte své telefonní číslo, abyste byli vždy ve spojení."
           }
         }
       }
     },
-    "App Preferences": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavení aplikace"
+    "App Preferences" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení aplikace"
           }
         }
       }
     },
-    "BLE": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "BLE"
+    "BLE" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BLE"
           }
         }
       }
     },
-    "Cancel": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zrušit"
+    "Bluetooth is off" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth je vypnuté"
           }
         }
       }
     },
-    "Cancel %@ Timer?": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zrušit %@ časovač?"
+    "Bluetooth not ready" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth není připraveno"
           }
         }
       }
     },
-    "Caregiver Alert Threshold": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prahová hodnota upozornění pečovatele"
+    "Bluetooth not supported" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth nepodporováno"
           }
         }
       }
     },
-    "Caregiver Contacts": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kontakty na pečovatele"
+    "Bluetooth ready" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth připraveno"
           }
         }
       }
     },
-    "Caregiver List": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seznam pečovatelů"
+    "Bluetooth state: %lld" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stav Bluetooth: %lld"
           }
         }
       }
     },
-    "Caregivers": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pečovatelé"
+    "Bluetooth unauthorized" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth nepovoleno"
           }
         }
       }
     },
-    "Confirm": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Potvrdit"
+    "Cancel" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit"
           }
         }
       }
     },
-    "Continue": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pokračovat"
+    "Cancel %@ Timer?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit %@ časovač?"
           }
         }
       }
     },
-    "Customize your pill reminders and caregiver notifications.": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Přizpůsobte si připomenutí léků a upozornění pečovatelů."
+    "Cancel Evening Timer?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit večerní časovač?"
           }
         }
       }
     },
-    "Done": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hotovo"
+    "Cancel Morning Timer?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit ranní časovač?"
           }
         }
       }
     },
-    "Email (Required)": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "E-mail (Povinné)"
+    "Caregiver Alert Threshold" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prahová hodnota upozornění pečovatele"
           }
         }
       }
     },
-    "Enter your email to sign in": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zadejte svůj e-mail pro přihlášení"
+    "Caregiver Contacts" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakty na pečovatele"
           }
         }
       }
     },
-    "Error occurred": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Došlo k chybě"
+    "Caregiver List" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seznam pečovatelů"
           }
         }
       }
     },
-    "ESP32 BLE": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ESP32 BLE"
+    "Caregivers" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pečovatelé"
           }
         }
       }
     },
-    "Get Started": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Začít"
+    "Characteristic discovery failed: %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nalezení charakteristik selhalo: %@"
           }
         }
       }
     },
-    "How it works": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jak to funguje"
+    "Confirm" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potvrdit"
           }
         }
       }
     },
-    "How many minutes between local notifications if you forget to take your pill.": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kolik minut mezi lokálními upozorněními, pokud si zapomenete vzít lék."
+    "Confirm via ESP32 or tap \"Taken!\" to stop" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potvrďte pomocí ESP32 nebo klepněte na \"Vzato!\" k zastavení"
           }
         }
       }
     },
-    "How many missed reminders before an email is sent to your caregivers.": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kolik zmeškaných upozornění, než bude odeslán e-mail vašim pečovatelům."
+    "Connected to %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojeno k %@"
           }
         }
       }
     },
-    "Keep Timer": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ponechat časovač"
+    "Connecting..." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojování..."
           }
         }
       }
     },
-    "Last Received Data": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Naposledy přijatá data"
+    "Continue" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokračovat"
           }
         }
       }
     },
-    "Lékovka": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lékovka"
+    "Customize your pill reminders and caregiver notifications." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přizpůsobte si připomenutí léků a upozornění pečovatelů."
           }
         }
       }
     },
-    "Manage contacts and verify your phone": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Správa kontaktů a ověření telefonu"
+    "Disconnect" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpojit"
           }
         }
       }
     },
-    "Phone (Optional)": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Telefon (Volitelné)"
+    "Disconnected" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odpojeno"
           }
         }
       }
     },
-    "Phone Number (+420...)": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Telefonní číslo (+420...)"
+    "Done" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hotovo"
           }
         }
       }
     },
-    "Phone Verification": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ověření telefonu"
+    "Email (Required)" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail (Povinné)"
           }
         }
       }
     },
-    "Phone verified successfully!": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Telefon úspěšně ověřen!"
+    "Enter your email to sign in" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zadejte svůj e-mail pro přihlášení"
           }
         }
       }
     },
-    "Pill Timer": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Časovač léků"
+    "Error occurred" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Došlo k chybě"
           }
         }
       }
     },
-    "Reminder Interval": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Interval připomenutí"
+    "Error: %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chyba: %@"
           }
         }
       }
     },
-    "Save & Sync Schedule": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uložit a synchronizovat"
+    "Error: Not logged in." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chyba: Nepřihlášen"
           }
         }
       }
     },
-    "Save Caregivers": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uložit pečovatele"
+    "ESP32 BLE" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ESP32 BLE"
           }
         }
       }
     },
-    "Save Preferences": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uložit předvolby"
+    "Evening Pills" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Večerní pilulky"
           }
         }
       }
     },
-    "Saved successfully!": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Úspěšně uloženo!"
+    "Failed to connect: %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepodařilo se připojit: %@"
           }
         }
       }
     },
-    "Saving...": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ukládání..."
+    "Found: %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nalezeno: %@"
           }
         }
       }
     },
-    "Scanning for ESP32...": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hledání ESP32..."
+    "Get Started" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začít"
           }
         }
       }
     },
-    "Scheduled for %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Naplánováno na %@"
+    "How it works" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jak to funguje"
           }
         }
       }
     },
-    "Set %@ time": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavit %@ čas"
+    "How many minutes between local notifications if you forget to take your pill." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolik minut mezi lokálními upozorněními, pokud si zapomenete vzít lék."
           }
         }
       }
     },
-    "Set your %@ time": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavte svůj %@ čas"
+    "How many missed reminders before an email is sent to your caregivers." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolik zmeškaných upozornění, než bude odeslán e-mail vašim pečovatelům."
           }
         }
       }
     },
-    "Settings": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavení"
+    "Invalid server response." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neplatná odpověď serveru."
           }
         }
       }
     },
-    "Signing in...": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Přihlašování..."
+    "Keep Timer" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponechat časovač"
           }
         }
       }
     },
-    "Taken at %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vzato v %@"
+    "Last Received Data" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naposledy přijatá data"
           }
         }
       }
     },
-    "Taken!": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vzato!"
+    "Lékovka" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lékovka"
           }
         }
       }
     },
-    "This will stop the reminders and delete the schedule from the server.": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tímto se zastaví připomenutí a odstraní se plán ze serveru."
+    "Listening for data..." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čekání na data..."
           }
         }
       }
     },
-    "Timer": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Časovač"
+    "Manage contacts and verify your phone" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Správa kontaktů a ověření telefonu"
           }
         }
       }
     },
-    "Verification failed": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ověření selhalo"
+    "Morning Pills" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ranní pilulky"
           }
         }
       }
     },
-    "Verification OTP Code": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ověřovací OTP kód"
+    "Not connected" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepřipojeno"
           }
         }
       }
     },
-    "Verify Phone": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ověřit telefon"
+    "Notification setup failed: %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení upozornění selhalo: %@"
           }
         }
       }
     },
-    "Yes, Cancel": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ano, zrušit"
+    "Phone (Optional)" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telefon (Volitelné)"
           }
         }
       }
     },
-    "Your pill reminder companion": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Váš společník pro připomenutí léků"
+    "Phone Number (+420...)" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telefonní číslo (+420...)"
           }
         }
       }
     },
-    "Set your morning time": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavte si ranní čas"
+    "Phone Verification" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ověření telefonu"
           }
         }
       }
     },
-    "Set your evening time": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavte si večerní čas"
+    "Phone verified successfully!" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Telefon úspěšně ověřen!"
           }
         }
       }
     },
-    "Set Morning time": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavit ranní čas"
+    "Pill Timer" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Časovač léků"
           }
         }
       }
     },
-    "Set Evening time": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavit večerní čas"
+    "Reconnecting..." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opětovné připojování..."
           }
         }
       }
     },
-    "Morning Pills": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ranní pilulky"
+    "Reminder Interval" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interval připomenutí"
           }
         }
       }
     },
-    "Evening Pills": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Večerní pilulky"
+    "Reminders repeat every %lld min until taken" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připomínky se opakují každých %lld min, dokud není lék užit"
           }
         }
       }
     },
-    "Cancel Morning Timer?": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zrušit ranní časovač?"
+    "Restored: %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnoveno: %@"
           }
         }
       }
     },
-    "Cancel Evening Timer?": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zrušit večerní časovač?"
+    "Save & Sync Schedule" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uložit a synchronizovat"
           }
         }
       }
     },
-    "Stop Scanning": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zastavit skenování"
+    "Save Caregivers" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uložit pečovatele"
           }
         }
       }
     },
-    "Scan for ESP32": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hledat ESP32"
+    "Save Preferences" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uložit předvolby"
           }
         }
       }
     },
-    "Disconnect": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Odpojit"
+    "Saved successfully!" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Úspěšně uloženo!"
           }
         }
       }
     },
-    "Disconnected": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Odpojeno"
+    "Saving..." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukládání..."
           }
         }
       }
     },
-    "Bluetooth not ready": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth není připraveno"
+    "Scan for ESP32" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hledat ESP32"
           }
         }
       }
     },
-    "Scanning for ESP32_JSON_DEVICE...": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hledání ESP32_JSON_DEVICE..."
+    "Scanning for ESP32_JSON_DEVICE..." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hledání ESP32_JSON_DEVICE..."
           }
         }
       }
     },
-    "Stopped scanning": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hledání zastaveno"
+    "Scanning for ESP32..." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hledání ESP32..."
           }
         }
       }
     },
-    "Restored: %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Obnoveno: %@"
+    "Scheduled for %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naplánováno na %@"
           }
         }
       }
     },
-    "Bluetooth ready": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth připraveno"
+    "Server error (HTTP %lld)" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chyba serveru (HTTP %lld)"
           }
         }
       }
     },
-    "Bluetooth is off": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth je vypnuté"
+    "Service discovery failed: %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nalezení služeb selhalo: %@"
           }
         }
       }
     },
-    "Bluetooth unauthorized": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth nepovoleno"
+    "Set %@ time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavit %@ čas"
           }
         }
       }
     },
-    "Bluetooth not supported": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth nepodporováno"
+    "Set Evening time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavit večerní čas"
           }
         }
       }
     },
-    "Found: %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nalezeno: %@"
+    "Set Morning time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavit ranní čas"
           }
         }
       }
     },
-    "Connecting...": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Připojování..."
+    "Set your %@ time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavte svůj %@ čas"
           }
         }
       }
     },
-    "Connected to %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Připojeno k %@"
+    "Set your evening time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavte si večerní čas"
           }
         }
       }
     },
-    "Failed to connect: %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nepodařilo se připojit: %@"
+    "Set your morning & evening pill times" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavte ranní a večerní časy léků"
           }
         }
       }
     },
-    "Reconnecting...": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opětovné připojování..."
+    "Set your morning time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavte si ranní čas"
           }
         }
       }
     },
-    "Service discovery failed: %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nalezení služeb selhalo: %@"
+    "Settings" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení"
           }
         }
       }
     },
-    "Characteristic discovery failed: %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nalezení charakteristik selhalo: %@"
+    "Settings saved successfully!" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení úspěšně uloženo!"
           }
         }
       }
     },
-    "Notification setup failed: %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavení upozornění selhalo: %@"
+    "Signing in..." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přihlašování..."
           }
         }
       }
     },
-    "Listening for data...": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Čekání na data..."
+    "Stop Scanning" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zastavit skenování"
           }
         }
       }
     },
-    "Not connected": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nepřipojeno"
+    "Stopped scanning" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hledání zastaveno"
           }
         }
       }
     },
-    "Bluetooth state: %lld": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stav Bluetooth: %lld"
+    "Taken at %@" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzato v %@"
           }
         }
       }
     },
-    "Error: Not logged in.": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chyba: Nepřihlášen"
+    "Taken!" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzato!"
           }
         }
       }
     },
-    "Error: %@": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chyba: %@"
+    "Tap Save to sync with ESP32 and server" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klepnutím na Uložit synchronizujte s ESP32 a serverem"
           }
         }
       }
     },
-    "Invalid server response.": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neplatná odpověď serveru."
+    "This will stop the reminders and delete the schedule from the server." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tímto se zastaví připomenutí a odstraní se plán ze serveru."
           }
         }
       }
     },
-    "Settings saved successfully!": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavení úspěšně uloženo!"
+    "Timer" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Časovač"
           }
         }
       }
     },
-    "Server error (HTTP %lld)": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chyba serveru (HTTP %lld)"
+    "Verification failed" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ověření selhalo"
           }
         }
       }
     },
-    "Set your morning & evening pill times": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavte ranní a večerní časy léků"
+    "Verification OTP Code" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ověřovací OTP kód"
           }
         }
       }
     },
-    "Tap Save to sync with ESP32 and server": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Klepnutím na Uložit synchronizujte s ESP32 a serverem"
+    "Verify Phone" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ověřit telefon"
           }
         }
       }
     },
-    "Reminders repeat every %lld min until taken": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Připomínky se opakují každých %lld min, dokud není lék užit"
+    "Yes, Cancel" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ano, zrušit"
           }
         }
       }
     },
-    "Confirm via ESP32 or tap \"Taken!\" to stop": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Potvrďte pomocí ESP32 nebo klepněte na \"Vzato!\" k zastavení"
+    "Your pill reminder companion" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Váš společník pro připomenutí léků"
           }
         }
       }
     },
-    "your@email.com": {
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "vas@email.cz"
+    "your@email.com" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vas@email.cz"
           }
         }
       }
     }
   },
-  "version": "1.1"
+  "version" : "1.1"
 }
