@@ -522,7 +522,7 @@ class PillReminderManager: ObservableObject {
         guard let url = URL(string: "\(baseURL)/schedules") else { return }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         if let userId = UserDefaults.standard.string(forKey: "lekovka_user_id") {
